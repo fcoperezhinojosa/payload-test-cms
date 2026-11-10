@@ -169,12 +169,6 @@ export const Pages: CollectionConfig = {
               },
             },
             {
-              name: 'heroShowSearchBar',
-              type: 'checkbox',
-              label: 'Mostrar barra buscadora encima de la imagen (estilo buscador de transfers)',
-              defaultValue: true,
-            },
-            {
               name: 'heroOverlayUsps',
               type: 'array',
               label: 'USPs encima de la imagen (Overlay USPs)',

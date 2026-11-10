@@ -357,7 +357,6 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
         heroHeading: 'Reliable airport transfers private taxi or shared shuttle',
         heroSubheading: 'Private transfers & shared shuttles to 700+ airports.',
         heroImageUrl: '/suntransfers-hero.jpg',
-        heroShowSearchBar: true,
         heroOverlayUsps: [
           { icon: 'check' as const, text: 'Free cancellation' },
           { icon: 'plane' as const, text: 'Flight monitoring' },
@@ -378,7 +377,6 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
           'Este Hero usa el mismo componente configurable pero sin barra buscadora, con otra imagen de fondo y sus propios USPs encima y debajo.',
         heroImageUrl:
           'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80',
-        heroShowSearchBar: false,
         heroOverlayUsps: [
           { icon: 'check' as const, text: 'Vetted local drivers' },
           { icon: 'plane' as const, text: 'Global airport coverage' },

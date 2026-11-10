@@ -168,7 +168,6 @@ export interface Page {
   heroSubheading?: string | null;
   heroImage?: (number | null) | Media;
   heroImageUrl?: string | null;
-  heroShowSearchBar?: boolean | null;
   /**
    * Aparecen en texto blanco con icono directamente sobre la imagen del Hero.
    */
@@ -691,7 +690,6 @@ export interface PagesSelect<T extends boolean = true> {
   heroSubheading?: T;
   heroImage?: T;
   heroImageUrl?: T;
-  heroShowSearchBar?: T;
   heroOverlayUsps?:
     | T
     | {
