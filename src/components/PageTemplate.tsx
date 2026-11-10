@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Payload } from 'payload'
-import type { Media, Page } from '@/payload-types'
+import type { Page } from '@/payload-types'
+import { PageHero } from './PageHero'
 import { RenderBlocks } from './RenderBlocks'
 
 type Props = {
@@ -9,11 +10,6 @@ type Props = {
 }
 
 export async function PageTemplate({ page, payload }: Props) {
-  const heroImage =
-    typeof page.heroImage === 'object' && page.heroImage !== null
-      ? (page.heroImage as Media)
-      : null
-
   const template = page.template || 'default'
   const updatedDate = new Date(page.updatedAt).toLocaleDateString('es-ES', {
     day: 'numeric',
@@ -32,6 +28,9 @@ export async function PageTemplate({ page, payload }: Props) {
           </span>
           <span>
             Template: <code>{template}</code>
+          </span>
+          <span>
+            Hero: <code>{page.heroType || 'imageOverlayUsp'}</code>
           </span>
         </div>
         <div className="cms-inspector-actions">
@@ -54,7 +53,7 @@ export async function PageTemplate({ page, payload }: Props) {
         </div>
       </div>
 
-      {/* Cabecera según el tipo de plantilla (Legal vs Hero visual) */}
+      {/* Cabecera según el tipo de plantilla (Legal vs Hero visual configurable por página) */}
       {template === 'legal' ? (
         <header className="legal-header">
           <span className="legal-eyebrow">Documento Legal</span>
@@ -63,23 +62,7 @@ export async function PageTemplate({ page, payload }: Props) {
           <p className="legal-updated">Última actualización desde el CMS: {updatedDate}</p>
         </header>
       ) : (
-        page.heroType !== 'none' && (
-          <header className={`hero hero--${page.heroType || 'highImpact'}`}>
-            <div className="hero-inner">
-              <span className="hero-eyebrow">
-                {template === 'landing' ? 'Landing Page · CMS' : page.title}
-              </span>
-              <h1>{page.heroHeading || page.title}</h1>
-              {page.heroSubheading && <p className="hero-subheading">{page.heroSubheading}</p>}
-              {heroImage?.url && (
-                <div className="hero-media">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={heroImage.url} alt={heroImage.alt || page.title} />
-                </div>
-              )}
-            </div>
-          </header>
-        )
+        <PageHero page={page} />
       )}
 
       {/* Cuerpo de bloques dinámicos */}

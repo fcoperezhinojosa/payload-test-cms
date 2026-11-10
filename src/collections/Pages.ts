@@ -1,5 +1,9 @@
 import type { CollectionConfig } from 'payload'
+import { DestinationCardsBlock } from '../blocks/DestinationCardsBlock'
+import { FaqBlock } from '../blocks/FaqBlock'
+import { IconCardsBlock } from '../blocks/IconCardsBlock'
 import { ImageCardsBlock } from '../blocks/ImageCardsBlock'
+import { NewsletterBlock } from '../blocks/NewsletterBlock'
 import { PillsSectionBlock } from '../blocks/PillsSectionBlock'
 
 export const Pages: CollectionConfig = {
@@ -77,25 +81,145 @@ export const Pages: CollectionConfig = {
             {
               name: 'heroType',
               type: 'select',
-              defaultValue: 'highImpact',
+              defaultValue: 'imageOverlayUsp',
+              label: 'Tipo de Hero',
               options: [
-                { label: 'None', value: 'none' },
-                { label: 'High Impact', value: 'highImpact' },
-                { label: 'Medium Impact', value: 'mediumImpact' },
+                {
+                  label: 'Image Overlay + USPs (Imagen de fondo con Título y USPs encima y debajo)',
+                  value: 'imageOverlayUsp',
+                },
+                { label: 'High Impact (Destacado con gradiente/imagen)', value: 'highImpact' },
+                { label: 'Medium Impact (Compacto / Editorial)', value: 'mediumImpact' },
+                { label: 'None (Sin Hero)', value: 'none' },
               ],
             },
             {
               name: 'heroHeading',
               type: 'text',
+              label: 'Título del Hero (Encima de la imagen)',
+              defaultValue: 'Reliable airport transfers private taxi or shared shuttle',
             },
             {
               name: 'heroSubheading',
               type: 'textarea',
+              label: 'Descripción del Hero (Encima de la imagen)',
+              defaultValue: 'Private transfers & shared shuttles to 700+ airports.',
             },
             {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              label: 'Imagen de fondo del Hero (desde Media Library)',
+            },
+            {
+              name: 'heroImageUrl',
+              type: 'text',
+              label: 'URL de imagen de fondo alternativa (opcional si no subes a Media)',
+              defaultValue: '/suntransfers-hero.jpg',
+              admin: {
+                placeholder: '/suntransfers-hero.jpg o https://images.unsplash.com/...',
+              },
+            },
+            {
+              name: 'heroShowSearchBar',
+              type: 'checkbox',
+              label: 'Mostrar barra buscadora encima de la imagen (estilo buscador de transfers)',
+              defaultValue: true,
+            },
+            {
+              name: 'heroOverlayUsps',
+              type: 'array',
+              label: 'USPs encima de la imagen (Overlay USPs)',
+              minRows: 0,
+              maxRows: 6,
+              admin: {
+                description:
+                  'Aparecen en texto blanco con icono directamente sobre la imagen del Hero.',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      defaultValue: 'check',
+                      label: 'Icono',
+                      options: [
+                        { label: '✓ Check (Free cancellation)', value: 'check' },
+                        { label: '✈ Plane (Flight monitoring)', value: 'plane' },
+                        { label: '💳 Card (No hidden fees)', value: 'card' },
+                        { label: '🎧 Headset (24/7 support)', value: 'support' },
+                      ],
+                      admin: {
+                        width: '40%',
+                      },
+                    },
+                    {
+                      name: 'text',
+                      type: 'text',
+                      required: true,
+                      label: 'Texto del USP',
+                      admin: {
+                        width: '60%',
+                        placeholder: 'Free cancellation',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'heroBottomUsps',
+              type: 'array',
+              label: 'USPs debajo de la imagen (Bottom Bar USPs)',
+              minRows: 0,
+              maxRows: 6,
+              admin: {
+                description:
+                  'Aparecen en la franja inferior justo debajo de la imagen del Hero (ej. 18+ Years of experience).',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      defaultValue: 'badge',
+                      label: 'Icono',
+                      options: [
+                        { label: '★ Badge (Years of experience)', value: 'badge' },
+                        { label: '👥 Users (Satisfied travellers)', value: 'users' },
+                        { label: '🌍 Globe (Locations worldwide)', value: 'globe' },
+                      ],
+                      admin: {
+                        width: '30%',
+                      },
+                    },
+                    {
+                      name: 'highlight',
+                      type: 'text',
+                      required: true,
+                      label: 'Cifra / Destacado en azul',
+                      admin: {
+                        width: '30%',
+                        placeholder: '18+',
+                      },
+                    },
+                    {
+                      name: 'text',
+                      type: 'text',
+                      required: true,
+                      label: 'Texto descriptivo',
+                      admin: {
+                        width: '40%',
+                        placeholder: 'Years of experience',
+                      },
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -107,7 +231,11 @@ export const Pages: CollectionConfig = {
               type: 'blocks',
               blocks: [
                 ImageCardsBlock,
+                IconCardsBlock,
                 PillsSectionBlock,
+                DestinationCardsBlock,
+                FaqBlock,
+                NewsletterBlock,
                 {
                   slug: 'content',
                   labels: {

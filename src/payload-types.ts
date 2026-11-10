@@ -151,10 +151,33 @@ export interface Page {
    */
   template: 'default' | 'landing' | 'legal';
   status: 'draft' | 'published';
-  heroType?: ('none' | 'highImpact' | 'mediumImpact') | null;
+  heroType?: ('imageOverlayUsp' | 'highImpact' | 'mediumImpact' | 'none') | null;
   heroHeading?: string | null;
   heroSubheading?: string | null;
   heroImage?: (number | null) | Media;
+  heroImageUrl?: string | null;
+  heroShowSearchBar?: boolean | null;
+  /**
+   * Aparecen en texto blanco con icono directamente sobre la imagen del Hero.
+   */
+  heroOverlayUsps?:
+    | {
+        icon?: ('check' | 'plane' | 'card' | 'support') | null;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Aparecen en la franja inferior justo debajo de la imagen del Hero (ej. 18+ Years of experience).
+   */
+  heroBottomUsps?:
+    | {
+        icon?: ('badge' | 'users' | 'globe') | null;
+        highlight: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   layout?:
     | (
         | {
@@ -172,6 +195,20 @@ export interface Page {
           }
         | {
             title: string;
+            cards: {
+              iconType: 'piggyBank' | 'calendar' | 'headset' | 'shield' | 'car' | 'custom';
+              customIcon?: string | null;
+              iconImage?: (number | null) | Media;
+              title: string;
+              description: string;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'iconCards';
+          }
+        | {
+            title: string;
             description?: string | null;
             pills: {
               icon?: string | null;
@@ -184,6 +221,52 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'pillsSection';
+          }
+        | {
+            title: string;
+            description?: string | null;
+            cards: {
+              image?: (number | null) | Media;
+              imageUrl?: string | null;
+              title: string;
+              description: string;
+              href?: string | null;
+              id?: string | null;
+            }[];
+            moreLabel?: string | null;
+            moreUrl?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'destinationCards';
+          }
+        | {
+            title: string;
+            description?: string | null;
+            items: {
+              question: string;
+              answer: string;
+              id?: string | null;
+            }[];
+            footerText?: string | null;
+            footerLinkLabel?: string | null;
+            footerLinkUrl?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faq';
+          }
+        | {
+            title: string;
+            description?: string | null;
+            inputPlaceholder?: string | null;
+            buttonLabel: string;
+            disclaimerText?: string | null;
+            termsLabel?: string | null;
+            termsUrl?: string | null;
+            image?: (number | null) | Media;
+            imageUrl?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsletter';
           }
         | {
             richText: {
@@ -592,6 +675,23 @@ export interface PagesSelect<T extends boolean = true> {
   heroHeading?: T;
   heroSubheading?: T;
   heroImage?: T;
+  heroImageUrl?: T;
+  heroShowSearchBar?: T;
+  heroOverlayUsps?:
+    | T
+    | {
+        icon?: T;
+        text?: T;
+        id?: T;
+      };
+  heroBottomUsps?:
+    | T
+    | {
+        icon?: T;
+        highlight?: T;
+        text?: T;
+        id?: T;
+      };
   layout?:
     | T
     | {
@@ -604,6 +704,23 @@ export interface PagesSelect<T extends boolean = true> {
                 | {
                     image?: T;
                     imageUrl?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        iconCards?:
+          | T
+          | {
+              title?: T;
+              cards?:
+                | T
+                | {
+                    iconType?: T;
+                    customIcon?: T;
+                    iconImage?: T;
                     title?: T;
                     description?: T;
                     id?: T;
@@ -626,6 +743,59 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               moreLabel?: T;
               moreUrl?: T;
+              id?: T;
+              blockName?: T;
+            };
+        destinationCards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              cards?:
+                | T
+                | {
+                    image?: T;
+                    imageUrl?: T;
+                    title?: T;
+                    description?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              moreLabel?: T;
+              moreUrl?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              footerText?: T;
+              footerLinkLabel?: T;
+              footerLinkUrl?: T;
+              id?: T;
+              blockName?: T;
+            };
+        newsletter?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              inputPlaceholder?: T;
+              buttonLabel?: T;
+              disclaimerText?: T;
+              termsLabel?: T;
+              termsUrl?: T;
+              image?: T;
+              imageUrl?: T;
               id?: T;
               blockName?: T;
             };

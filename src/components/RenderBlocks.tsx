@@ -3,7 +3,11 @@ import Link from 'next/link'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Payload } from 'payload'
 import type { Exhibition, Media, Page, Review } from '@/payload-types'
+import { DestinationCardsSection } from './DestinationCardsSection'
+import { FaqSection } from './FaqSection'
+import { IconCardsSection } from './IconCardsSection'
 import { ImageCardsSection } from './ImageCardsSection'
+import { NewsletterSection } from './NewsletterSection'
 import { PillsSection } from './PillsSection'
 
 type Props = {
@@ -33,6 +37,16 @@ export async function RenderBlocks({ blocks, payload }: Props) {
               )
             }
 
+            case 'iconCards': {
+              return (
+                <IconCardsSection
+                  key={key}
+                  title={block.title}
+                  cards={block.cards}
+                />
+              )
+            }
+
             case 'pillsSection': {
               return (
                 <PillsSection
@@ -42,6 +56,50 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   pills={block.pills}
                   moreLabel={block.moreLabel}
                   moreUrl={block.moreUrl}
+                />
+              )
+            }
+
+            case 'destinationCards': {
+              return (
+                <DestinationCardsSection
+                  key={key}
+                  title={block.title}
+                  description={block.description}
+                  cards={block.cards}
+                  moreLabel={block.moreLabel}
+                  moreUrl={block.moreUrl}
+                />
+              )
+            }
+
+            case 'faq': {
+              return (
+                <FaqSection
+                  key={key}
+                  title={block.title}
+                  description={block.description}
+                  items={block.items}
+                  footerText={block.footerText}
+                  footerLinkLabel={block.footerLinkLabel}
+                  footerLinkUrl={block.footerLinkUrl}
+                />
+              )
+            }
+
+            case 'newsletter': {
+              return (
+                <NewsletterSection
+                  key={key}
+                  title={block.title}
+                  description={block.description}
+                  inputPlaceholder={block.inputPlaceholder}
+                  buttonLabel={block.buttonLabel}
+                  disclaimerText={block.disclaimerText}
+                  termsLabel={block.termsLabel}
+                  termsUrl={block.termsUrl}
+                  image={block.image}
+                  imageUrl={block.imageUrl}
                 />
               )
             }

@@ -1,0 +1,95 @@
+'use client'
+
+import React, { useState } from 'react'
+import Link from 'next/link'
+import type { Media } from '@/payload-types'
+
+export type NewsletterSectionProps = {
+  title: string
+  description?: string | null
+  inputPlaceholder?: string | null
+  buttonLabel: string
+  disclaimerText?: string | null
+  termsLabel?: string | null
+  termsUrl?: string | null
+  image?: (number | null) | Media
+  imageUrl?: string | null
+}
+
+export function NewsletterSection({
+  title,
+  description,
+  inputPlaceholder,
+  buttonLabel,
+  disclaimerText,
+  termsLabel,
+  termsUrl,
+  image,
+  imageUrl,
+}: NewsletterSectionProps) {
+  const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  const mediaObj =
+    typeof image === 'object' && image !== null ? (image as Media) : null
+  const resolvedSrc = mediaObj?.url || imageUrl || null
+  const resolvedAlt = mediaObj?.alt || title
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email.trim()) return
+    setSubmitted(true)
+  }
+
+  return (
+    <section className="cms-block cms-block--newsletter">
+      <div className="newsletter-box">
+        <div className="newsletter-content">
+          {title && <h2>{title}</h2>}
+          {description && <p className="newsletter-description">{description}</p>}
+
+          {submitted ? (
+            <div className="newsletter-success">
+              ✓ Thanks for subscribing with <strong>{email}</strong>!
+            </div>
+          ) : (
+            <form className="newsletter-form" onSubmit={handleSubmit}>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={inputPlaceholder || 'Your email address'}
+                aria-label={inputPlaceholder || 'Your email address'}
+                className="newsletter-input"
+              />
+              <button type="submit" className="newsletter-submit-btn">
+                {buttonLabel || 'Subscribe'}
+              </button>
+            </form>
+          )}
+
+          {(disclaimerText || termsLabel) && (
+            <p className="newsletter-disclaimer">
+              {disclaimerText && <span>{disclaimerText} </span>}
+              {termsLabel && (
+                <Link href={termsUrl || '/terms-and-conditions'} className="newsletter-terms-link">
+                  {termsLabel}
+                </Link>
+              )}
+            </p>
+          )}
+        </div>
+
+        <div className="newsletter-media">
+          {resolvedSrc ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={resolvedSrc} alt={resolvedAlt} loading="lazy" />
+          ) : (
+            <div className="newsletter-media-placeholder">Sin imagen</div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

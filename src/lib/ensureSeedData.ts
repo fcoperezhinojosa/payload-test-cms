@@ -184,6 +184,200 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
         moreUrl: '#all-countries',
       }
 
+      const sampleDestinationCardsBlock = {
+        blockType: 'destinationCards' as const,
+        title: 'Airports we go to every day',
+        description: 'We get you to and from the airport, wherever you go.',
+        cards: [
+          {
+            title: 'Palma de Mallorca Airport (PMI)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+            href: '#pmi',
+          },
+          {
+            title: 'Alicante–Elche Miguel Hernández Airport (ALC)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1558642084-fd07fae5282e?auto=format&fit=crop&w=800&q=80',
+            href: '#alc',
+          },
+          {
+            title: 'Tenerife South Airport (TFS)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80',
+            href: '#tfs',
+          },
+          {
+            title: 'Gran Canaria Airport (LPA)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+            href: '#lpa',
+          },
+          {
+            title: 'Antalya Airport (AYT)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=800&q=80',
+            href: '#ayt',
+          },
+          {
+            title: 'Dalaman Airport (DLM)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
+            href: '#dlm',
+          },
+          {
+            title: 'Hurghada Airport (HRG)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+            href: '#hrg',
+          },
+          {
+            title: 'Barcelona Airport (BCN)',
+            description: '325 routes available',
+            imageUrl:
+              'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80',
+            href: '#bcn',
+          },
+        ],
+        moreLabel: 'See all 399 routes',
+        moreUrl: '#all-routes',
+      }
+
+      const sampleFaqBlock = {
+        blockType: 'faq' as const,
+        title: 'FAQs',
+        description: 'What travellers ask before booking a transfer.',
+        items: [
+          {
+            question: 'Is it worth booking an airport transfer in advance?',
+            answer:
+              "Yes. Booking an airport transfer in advance means your trip is confirmed and a driver is assigned before you travel. So someone is there to meet you on arrival, the price is fixed, and you're with a professional, vetted service. Whether you're arriving or departing, it's all arranged ahead, and you can head straight to your hotel, villa, resort, or airport terminal.",
+          },
+          {
+            question: "What's the best option for airport transfers?",
+            answer:
+              'Private transfers are ideal for comfort, speed, and door-to-door convenience, while shared shuttles offer a budget-friendly option for solo travellers or small groups heading to popular resorts.',
+          },
+          {
+            question: 'What is the difference between airport shuttle and private airport transfer?',
+            answer:
+              'A private transfer takes you and your group directly to your accommodation in a dedicated vehicle with no stops. An airport shuttle is shared with other passengers travelling in the same direction and may make multiple stops along the route.',
+          },
+          {
+            question: 'Are private airport transfers worth it?',
+            answer:
+              'Yes, especially for families, groups, or travellers carrying luggage. Your driver meets you at arrivals, helps with bags, and drives you straight to your destination at a fixed upfront price.',
+          },
+          {
+            question: 'Are private transfers cheaper than taxis?',
+            answer:
+              'Pre-booked private transfers often cost less than airport taxis because the fare is locked in advance—with no meter running in traffic, no night surcharges, and no hidden fees.',
+          },
+          {
+            question: 'What happens if my flight is delayed?',
+            answer:
+              'We monitor your flight number in real time and automatically adjust your pickup time at no extra cost, so your driver will be waiting whenever you land.',
+          },
+          {
+            question: 'Where exactly will I meet my driver at the airport?',
+            answer:
+              'Your booking voucher includes clear meeting point instructions for your arrival terminal. Typically, your driver waits in the arrivals hall holding a sign with your name.',
+          },
+          {
+            question: "What's included in the price of the private transfer?",
+            answer:
+              'All taxes, tolls, meet-and-greet service, flight tracking, luggage allowance, and free cancellation up to 48 hours before pickup are included in the confirmed price.',
+          },
+        ],
+        footerText: 'Do you have more questions?',
+        footerLinkLabel: 'Visit our Help Centre',
+        footerLinkUrl: '#help-centre',
+      }
+
+      const sampleIconCardsBlock = {
+        blockType: 'iconCards' as const,
+        title: 'Why book your transfers with Suntransfers?',
+        cards: [
+          {
+            iconType: 'piggyBank' as const,
+            title: 'Great value',
+            description:
+              'Low, low prices without sacrificing great service. No charges apply to debit or credit card payments.',
+          },
+          {
+            iconType: 'calendar' as const,
+            title: 'Easy & flexible booking',
+            description:
+              'Book in 5 minutes. Free changes and cancellations up to 48 hours before pickup.',
+          },
+          {
+            iconType: 'headset' as const,
+            title: '24/7 customer service',
+            description:
+              "Our office is staffed 24 hours a day, 365 days a year - we're always here to help you.",
+          },
+        ],
+      }
+
+      const sampleNewsletterBlock = {
+        blockType: 'newsletter' as const,
+        title: 'Join Our Community',
+        description: 'Receive special deals and save up to 20% on bookings.',
+        inputPlaceholder: 'Your email address',
+        buttonLabel: 'Subscribe',
+        disclaimerText: 'By signing up, you agree to our',
+        termsLabel: 'Terms and Conditions.',
+        termsUrl: '/terms-and-conditions',
+        imageUrl:
+          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80',
+      }
+
+      const homeHeroData = {
+        heroType: 'imageOverlayUsp' as const,
+        heroHeading: 'Reliable airport transfers private taxi or shared shuttle',
+        heroSubheading: 'Private transfers & shared shuttles to 700+ airports.',
+        heroImageUrl: '/suntransfers-hero.jpg',
+        heroShowSearchBar: true,
+        heroOverlayUsps: [
+          { icon: 'check' as const, text: 'Free cancellation' },
+          { icon: 'plane' as const, text: 'Flight monitoring' },
+          { icon: 'card' as const, text: 'No hidden fees' },
+          { icon: 'support' as const, text: '24/7 support' },
+        ],
+        heroBottomUsps: [
+          { icon: 'badge' as const, highlight: '18+', text: 'Years of experience' },
+          { icon: 'users' as const, highlight: '4M+', text: 'Satisfied travellers yearly' },
+          { icon: 'globe' as const, highlight: '700+', text: 'Locations worldwide' },
+        ],
+      }
+
+      const aboutHeroData = {
+        heroType: 'imageOverlayUsp' as const,
+        heroHeading: 'Sobre Nosotros · Moving travellers worldwide',
+        heroSubheading:
+          'Este Hero usa el mismo componente configurable pero sin barra buscadora, con otra imagen de fondo y sus propios USPs encima y debajo.',
+        heroImageUrl:
+          'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80',
+        heroShowSearchBar: false,
+        heroOverlayUsps: [
+          { icon: 'check' as const, text: 'Vetted local drivers' },
+          { icon: 'plane' as const, text: 'Global airport coverage' },
+          { icon: 'support' as const, text: 'Multilingual 24/7 team' },
+        ],
+        heroBottomUsps: [
+          { icon: 'badge' as const, highlight: '2008', text: 'Founded in Europe' },
+          { icon: 'users' as const, highlight: '98%', text: 'Customer satisfaction' },
+          { icon: 'globe' as const, highlight: '125+', text: 'Countries covered' },
+        ],
+      }
+
       // 2. Seed Home Page if not present
       if (!existingSlugs.has('home')) {
         await payload.create({
@@ -193,13 +387,14 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             slug: 'home',
             template: 'landing',
             status: 'published',
-            heroType: 'highImpact',
-            heroHeading: 'Tus páginas gestionadas desde Payload CMS',
-            heroSubheading:
-              'Esta Homepage, igual que About Us, Reviews o Terms & Conditions, está montada directamente desde la colección Pages de Payload.',
+            ...homeHeroData,
             layout: [
               sampleImageCardsBlock,
+              sampleIconCardsBlock,
               samplePillsSectionBlock,
+              sampleDestinationCardsBlock,
+              sampleFaqBlock,
+              sampleNewsletterBlock,
               {
                 blockType: 'features',
                 heading: 'Dos modos de trabajo en un mismo proyecto',
@@ -250,10 +445,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             slug: 'about-us',
             template: 'default',
             status: 'published',
-            heroType: 'mediumImpact',
-            heroHeading: 'Sobre Nosotros (About Us)',
-            heroSubheading:
-              'Una página corporativa montada 100% vía CMS usando bloques editoriales, tarjetas de valores y llamadas a la acción.',
+            ...aboutHeroData,
             layout: [
               {
                 blockType: 'content',
@@ -422,6 +614,17 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             needsUpdate = true
           }
 
+          const hasIconCards = currentLayout.some((b) => b.blockType === 'iconCards')
+          if (!hasIconCards) {
+            const imgIdx = currentLayout.findIndex((b) => b.blockType === 'imageCards')
+            if (imgIdx >= 0) {
+              currentLayout.splice(imgIdx + 1, 0, sampleIconCardsBlock)
+            } else {
+              currentLayout.unshift(sampleIconCardsBlock)
+            }
+            needsUpdate = true
+          }
+
           const hasPillsSection = currentLayout.some((b) => b.blockType === 'pillsSection')
           if (!hasPillsSection) {
             const imageCardsIdx = currentLayout.findIndex((b) => b.blockType === 'imageCards')
@@ -433,11 +636,51 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             needsUpdate = true
           }
 
-          if (needsUpdate) {
+          const hasDestinationCards = currentLayout.some(
+            (b) => b.blockType === 'destinationCards',
+          )
+          if (!hasDestinationCards) {
+            const pillsIdx = currentLayout.findIndex((b) => b.blockType === 'pillsSection')
+            if (pillsIdx >= 0) {
+              currentLayout.splice(pillsIdx + 1, 0, sampleDestinationCardsBlock)
+            } else {
+              currentLayout.unshift(sampleDestinationCardsBlock)
+            }
+            needsUpdate = true
+          }
+
+          const hasFaq = currentLayout.some((b) => b.blockType === 'faq')
+          if (!hasFaq) {
+            const destIdx = currentLayout.findIndex((b) => b.blockType === 'destinationCards')
+            if (destIdx >= 0) {
+              currentLayout.splice(destIdx + 1, 0, sampleFaqBlock)
+            } else {
+              currentLayout.push(sampleFaqBlock)
+            }
+            needsUpdate = true
+          }
+
+          const hasNewsletter = currentLayout.some((b) => b.blockType === 'newsletter')
+          if (!hasNewsletter) {
+            const faqIdx = currentLayout.findIndex((b) => b.blockType === 'faq')
+            if (faqIdx >= 0) {
+              currentLayout.splice(faqIdx + 1, 0, sampleNewsletterBlock)
+            } else {
+              currentLayout.push(sampleNewsletterBlock)
+            }
+            needsUpdate = true
+          }
+
+          const hasOverlayUsps =
+            Array.isArray(existingDoc.heroOverlayUsps) && existingDoc.heroOverlayUsps.length > 0
+
+          if (needsUpdate || !hasOverlayUsps) {
+            const heroPatch = targetSlug === 'home' ? homeHeroData : aboutHeroData
             await payload.update({
               collection: 'pages',
               id: existingDoc.id,
               data: {
+                ...(hasOverlayUsps ? {} : heroPatch),
                 layout: currentLayout,
               },
             })
