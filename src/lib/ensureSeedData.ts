@@ -70,6 +70,19 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
 
   seedPromise = (async () => {
     try {
+      // 0. Ensure Site Settings global defaults (Poppins + Light theme)
+      const currentSettings = await payload.findGlobal({ slug: 'site-settings' }).catch(() => null)
+      if (currentSettings && (!currentSettings.fontFamily || !currentSettings.backgroundTheme)) {
+        await payload.updateGlobal({
+          slug: 'site-settings',
+          data: {
+            siteName: currentSettings.siteName || 'Payload Museum & CMS',
+            fontFamily: currentSettings.fontFamily || 'poppins',
+            backgroundTheme: currentSettings.backgroundTheme || 'light',
+          },
+        })
+      }
+
       // 1. Seed initial reviews if none exist
       const existingReviews = await payload.find({
         collection: 'reviews',

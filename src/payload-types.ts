@@ -151,6 +151,18 @@ export interface Page {
    */
   template: 'default' | 'landing' | 'legal';
   status: 'draft' | 'published';
+  /**
+   * Permite usar una fuente específica en esta página o heredar la global.
+   */
+  pageFont?: ('inherit' | 'poppins' | 'inter' | 'jakarta' | 'montserrat' | 'editorial' | 'system') | null;
+  /**
+   * Cambia el color de fondo de esta página o usa el tema global.
+   */
+  pageTheme?: ('inherit' | 'light' | 'white' | 'warm' | 'sky' | 'slate' | 'dark') | null;
+  /**
+   * Opcional: código Hex para el fondo exclusivo de esta página.
+   */
+  customBackgroundColor?: string | null;
   heroType?: ('imageOverlayUsp' | 'highImpact' | 'mediumImpact' | 'none') | null;
   heroHeading?: string | null;
   heroSubheading?: string | null;
@@ -671,6 +683,9 @@ export interface PagesSelect<T extends boolean = true> {
   slug?: T;
   template?: T;
   status?: T;
+  pageFont?: T;
+  pageTheme?: T;
+  customBackgroundColor?: T;
   heroType?: T;
   heroHeading?: T;
   heroSubheading?: T;
@@ -1060,6 +1075,12 @@ export interface SiteSetting {
   siteName: string;
   tagline?: string | null;
   logo?: (number | null) | Media;
+  fontFamily: 'poppins' | 'inter' | 'jakarta' | 'montserrat' | 'editorial' | 'system';
+  backgroundTheme: 'light' | 'white' | 'warm' | 'sky' | 'slate' | 'dark';
+  /**
+   * Si introduces un código de color (ej. #f1f5f9), se aplicará como color de fondo principal.
+   */
+  customBackgroundColor?: string | null;
   navigation?:
     | {
         label: string;
@@ -1134,6 +1155,9 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   tagline?: T;
   logo?: T;
+  fontFamily?: T;
+  backgroundTheme?: T;
+  customBackgroundColor?: T;
   navigation?:
     | T
     | {

@@ -73,6 +73,54 @@ export const Pages: CollectionConfig = {
       },
     },
     {
+      name: 'pageFont',
+      type: 'select',
+      label: 'Tipografía de la Página (Font)',
+      defaultValue: 'inherit',
+      options: [
+        { label: 'Heredar configuración global (Poppins por defecto)', value: 'inherit' },
+        { label: 'Poppins', value: 'poppins' },
+        { label: 'Inter', value: 'inter' },
+        { label: 'Plus Jakarta Sans', value: 'jakarta' },
+        { label: 'Montserrat', value: 'montserrat' },
+        { label: 'Playfair Display + Poppins (Editorial)', value: 'editorial' },
+        { label: 'System UI', value: 'system' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Permite usar una fuente específica en esta página o heredar la global.',
+      },
+    },
+    {
+      name: 'pageTheme',
+      type: 'select',
+      label: 'Tema / Color de Fondo',
+      defaultValue: 'inherit',
+      options: [
+        { label: 'Heredar tema global (Claro #f8fafc por defecto)', value: 'inherit' },
+        { label: 'Claro Suave (#f8fafc)', value: 'light' },
+        { label: 'Blanco Puro (#ffffff)', value: 'white' },
+        { label: 'Crema / Editorial Cálido (#faf7f2)', value: 'warm' },
+        { label: 'Azul Cielo Suave (#f0f7ff)', value: 'sky' },
+        { label: 'Oscuro Slate (#0f172a)', value: 'slate' },
+        { label: 'Oscuro Noche (#0b0c10)', value: 'dark' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Cambia el color de fondo de esta página o usa el tema global.',
+      },
+    },
+    {
+      name: 'customBackgroundColor',
+      type: 'text',
+      label: 'Color de fondo Hex personalizado (Opcional)',
+      admin: {
+        position: 'sidebar',
+        placeholder: 'Ej. #f8fafc o #fffbeb',
+        description: 'Opcional: código Hex para el fondo exclusivo de esta página.',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {

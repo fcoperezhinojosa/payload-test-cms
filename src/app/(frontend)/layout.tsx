@@ -1,9 +1,47 @@
 import React from 'react'
 import Link from 'next/link'
+import {
+  Inter,
+  Montserrat,
+  Playfair_Display,
+  Plus_Jakarta_Sans,
+  Poppins,
+} from 'next/font/google'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { ensureSeedData } from '@/lib/ensureSeedData'
 import './styles.css'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-poppins',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+})
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
 
 export const metadata = {
   description: 'Sitio web híbrido con Payload 3.0 y Next.js (CMS de páginas + Headless).',
@@ -29,11 +67,26 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   ])
 
   const siteName = siteSettings?.siteName || 'Payload Museum & CMS'
+  const globalFont = siteSettings?.fontFamily || 'poppins'
+  const globalTheme = siteSettings?.backgroundTheme || 'light'
+  const customBg = siteSettings?.customBackgroundColor?.trim() || ''
   const cmsPages = publishedPages?.docs || []
 
+  const fontClasses = [
+    poppins.variable,
+    inter.variable,
+    jakarta.variable,
+    montserrat.variable,
+    playfair.variable,
+  ].join(' ')
+
+  const bodyStyle = customBg
+    ? ({ '--bg': customBg, backgroundColor: customBg } as React.CSSProperties)
+    : undefined
+
   return (
-    <html lang="es">
-      <body>
+    <html lang="es" className={fontClasses}>
+      <body data-theme={globalTheme} data-font={globalFont} style={bodyStyle}>
         <header className="site-header">
           <div className="site-header-inner">
             <Link href="/" className="site-brand">
@@ -74,6 +127,15 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
             <div className="site-header-cta">
               <a
+                href="/admin/globals/site-settings"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-theme-settings"
+                title="Cambiar tipografía y color de fondo global en Payload CMS"
+              >
+                🎨 Tema / Font
+              </a>
+              <a
                 href={payloadConfig.routes.admin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -102,6 +164,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
               <Link href="/reviews">Reviews</Link>
               <Link href="/terms-and-conditions">Terms &amp; Conditions</Link>
               <Link href="/headless-demo">Demo Headless</Link>
+              <a href="/admin/globals/site-settings" target="_blank" rel="noopener noreferrer">
+                Ajustes de Tema / Font ↗
+              </a>
               <a href="/api/pages" target="_blank" rel="noopener noreferrer">
                 REST API (/api/pages) ↗
               </a>

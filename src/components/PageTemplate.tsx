@@ -11,14 +11,27 @@ type Props = {
 
 export async function PageTemplate({ page, payload }: Props) {
   const template = page.template || 'default'
+  const pageFont = page.pageFont && page.pageFont !== 'inherit' ? page.pageFont : undefined
+  const pageTheme = page.pageTheme && page.pageTheme !== 'inherit' ? page.pageTheme : undefined
+  const customBg = page.customBackgroundColor?.trim() || ''
+
   const updatedDate = new Date(page.updatedAt).toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   })
 
+  const pageStyle = customBg
+    ? ({ '--bg': customBg, backgroundColor: customBg } as React.CSSProperties)
+    : undefined
+
   return (
-    <article className={`cms-page cms-page--${template}`}>
+    <article
+      className={`cms-page cms-page--${template}`}
+      data-font={pageFont}
+      data-theme={pageTheme}
+      style={pageStyle}
+    >
       {/* Barra informativa de Payload para editar o ver JSON Headless */}
       <div className="cms-inspector-bar">
         <div className="cms-inspector-info">
@@ -30,10 +43,21 @@ export async function PageTemplate({ page, payload }: Props) {
             Template: <code>{template}</code>
           </span>
           <span>
-            Hero: <code>{page.heroType || 'imageOverlayUsp'}</code>
+            Font: <code>{pageFont || 'global (poppins)'}</code>
+          </span>
+          <span>
+            Fondo: <code>{customBg || pageTheme || 'global (light)'}</code>
           </span>
         </div>
         <div className="cms-inspector-actions">
+          <a
+            href="/admin/globals/site-settings"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cms-action-link cms-action-link--secondary"
+          >
+            Tema Global ↗
+          </a>
           <a
             href={`/admin/collections/pages/${page.id}`}
             target="_blank"
