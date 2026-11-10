@@ -8,6 +8,7 @@ import sharp from 'sharp'
 
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Reviews } from './collections/Reviews'
 import { Media } from './collections/Media'
 import { Events } from './collections/Events'
 import { Artists } from './collections/Artists'
@@ -26,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Pages, Posts, Media, Events, Artists, Exhibitions, Users],
+  collections: [Pages, Posts, Reviews, Media, Events, Artists, Exhibitions, Users],
   globals: [SiteSettings, VisitorInfo],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

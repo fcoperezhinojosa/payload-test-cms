@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    reviews: Review;
     media: Media;
     events: Event;
     artists: Artist;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     artists: ArtistsSelect<false> | ArtistsSelect<true>;
@@ -141,9 +143,13 @@ export interface Page {
   id: number;
   title: string;
   /**
-   * Ruta de la página (ej. home, about, visit)
+   * Ruta de la página (ej. home, about-us, terms-and-conditions, reviews)
    */
   slug: string;
+  /**
+   * Define el estilo de plantilla con el que se renderiza la página
+   */
+  template: 'default' | 'landing' | 'legal';
   status: 'draft' | 'published';
   heroType?: ('none' | 'highImpact' | 'mediumImpact') | null;
   heroHeading?: string | null;
@@ -151,6 +157,19 @@ export interface Page {
   heroImage?: (number | null) | Media;
   layout?:
     | (
+        | {
+            heading: string;
+            cards: {
+              image?: (number | null) | Media;
+              imageUrl?: string | null;
+              title: string;
+              description: string;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'imageCards';
+          }
         | {
             richText: {
               root: {
@@ -170,6 +189,31 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'content';
+          }
+        | {
+            heading?: string | null;
+            subheading?: string | null;
+            items: {
+              title: string;
+              description: string;
+              badge?: string | null;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'features';
+          }
+        | {
+            heading?: string | null;
+            subheading?: string | null;
+            showAllFeatured?: boolean | null;
+            /**
+             * Opcional: si desmarcas la opción anterior, puedes elegir manualmente qué reviews mostrar aquí.
+             */
+            selectedReviews?: (number | Review)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'reviewsBlock';
           }
         | {
             media: number | Media;
@@ -221,6 +265,23 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  author: string;
+  role?: string | null;
+  /**
+   * Puntuación de 1 a 5 estrellas
+   */
+  rating: number;
+  featured?: boolean | null;
+  comment: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -438,6 +499,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -506,6 +571,7 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  template?: T;
   status?: T;
   heroType?: T;
   heroHeading?: T;
@@ -514,10 +580,52 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        imageCards?:
+          | T
+          | {
+              heading?: T;
+              cards?:
+                | T
+                | {
+                    image?: T;
+                    imageUrl?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         content?:
           | T
           | {
               richText?: T;
+              id?: T;
+              blockName?: T;
+            };
+        features?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    badge?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        reviewsBlock?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              showAllFeatured?: T;
+              selectedReviews?: T;
               id?: T;
               blockName?: T;
             };
@@ -573,6 +681,19 @@ export interface PostsSelect<T extends boolean = true> {
         tag?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  author?: T;
+  role?: T;
+  rating?: T;
+  featured?: T;
+  comment?: T;
   updatedAt?: T;
   createdAt?: T;
 }

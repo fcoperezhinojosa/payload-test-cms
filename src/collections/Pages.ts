@@ -1,11 +1,23 @@
 import type { CollectionConfig } from 'payload'
+import { ImageCardsBlock } from '../blocks/ImageCardsBlock'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
     group: 'Content',
-    defaultColumns: ['title', 'slug', 'status', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'template', 'status', 'updatedAt'],
+    preview: (doc) => {
+      const slug = typeof doc?.slug === 'string' ? doc.slug : ''
+      if (!slug) return null
+      return slug === 'home' ? '/' : `/${slug}`
+    },
+    livePreview: {
+      url: ({ data }) => {
+        const slug = typeof data?.slug === 'string' ? data.slug : ''
+        return slug === 'home' ? '/' : `/${slug}`
+      },
+    },
   },
   access: {
     read: () => true,
@@ -24,7 +36,22 @@ export const Pages: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Ruta de la página (ej. home, about, visit)',
+        description: 'Ruta de la página (ej. home, about-us, terms-and-conditions, reviews)',
+      },
+    },
+    {
+      name: 'template',
+      type: 'select',
+      required: true,
+      defaultValue: 'default',
+      options: [
+        { label: 'Estándar / Bloques (About Us, Reviews...)', value: 'default' },
+        { label: 'Landing / Homepage', value: 'landing' },
+        { label: 'Documento Legal (Terms & Conditions, Privacy...)', value: 'legal' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Define el estilo de plantilla con el que se renderiza la página',
       },
     },
     {
@@ -78,6 +105,7 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                ImageCardsBlock,
                 {
                   slug: 'content',
                   labels: {
@@ -89,6 +117,82 @@ export const Pages: CollectionConfig = {
                       name: 'richText',
                       type: 'richText',
                       required: true,
+                    },
+                  ],
+                },
+                {
+                  slug: 'features',
+                  labels: {
+                    singular: 'Features / Pillars Grid',
+                    plural: 'Features / Pillars Grids',
+                  },
+                  fields: [
+                    {
+                      name: 'heading',
+                      type: 'text',
+                    },
+                    {
+                      name: 'subheading',
+                      type: 'textarea',
+                    },
+                    {
+                      name: 'items',
+                      type: 'array',
+                      required: true,
+                      minRows: 1,
+                      fields: [
+                        {
+                          name: 'title',
+                          type: 'text',
+                          required: true,
+                        },
+                        {
+                          name: 'description',
+                          type: 'textarea',
+                          required: true,
+                        },
+                        {
+                          name: 'badge',
+                          type: 'text',
+                          admin: {
+                            placeholder: 'Ej. 01, Misión, +10 años...',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  slug: 'reviewsBlock',
+                  labels: {
+                    singular: 'Reviews Section',
+                    plural: 'Reviews Sections',
+                  },
+                  fields: [
+                    {
+                      name: 'heading',
+                      type: 'text',
+                      defaultValue: 'Lo que dicen nuestros visitantes',
+                    },
+                    {
+                      name: 'subheading',
+                      type: 'textarea',
+                    },
+                    {
+                      name: 'showAllFeatured',
+                      type: 'checkbox',
+                      defaultValue: true,
+                      label: 'Mostrar automáticamente todas las reviews destacadas',
+                    },
+                    {
+                      name: 'selectedReviews',
+                      type: 'relationship',
+                      relationTo: 'reviews',
+                      hasMany: true,
+                      admin: {
+                        description:
+                          'Opcional: si desmarcas la opción anterior, puedes elegir manualmente qué reviews mostrar aquí.',
+                      },
                     },
                   ],
                 },
