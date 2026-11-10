@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { ImageCardsBlock } from '../blocks/ImageCardsBlock'
+import { PillsSectionBlock } from '../blocks/PillsSectionBlock'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -106,6 +107,7 @@ export const Pages: CollectionConfig = {
               type: 'blocks',
               blocks: [
                 ImageCardsBlock,
+                PillsSectionBlock,
                 {
                   slug: 'content',
                   labels: {

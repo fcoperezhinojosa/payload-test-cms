@@ -154,6 +154,36 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
         ],
       }
 
+      const samplePillsSectionBlock = {
+        blockType: 'pillsSection' as const,
+        title: '700+ destinations worldwide',
+        description: 'Select a country to see available options for your trip.',
+        pills: [
+          { icon: '🇪🇸', label: 'Spain', href: '#spain' },
+          { icon: '🇵🇹', label: 'Portugal', href: '#portugal' },
+          { icon: '🇬🇷', label: 'Greece', href: '#greece' },
+          { icon: '🇹🇷', label: 'Turkey', href: '#turkey' },
+          { icon: '🇨🇾', label: 'Cyprus', href: '#cyprus' },
+          { icon: '🇪🇬', label: 'Egypt', href: '#egypt' },
+          { icon: '🇩🇴', label: 'Dominican Republic', href: '#dominican-republic' },
+          { icon: '🇲🇦', label: 'Morocco', href: '#morocco' },
+          { icon: '🇦🇪', label: 'United Arab Emirates', href: '#uae' },
+          { icon: '🇹🇭', label: 'Thailand', href: '#thailand' },
+          { icon: '🇭🇷', label: 'Croatia', href: '#croatia' },
+          { icon: '🇲🇹', label: 'Malta', href: '#malta' },
+          { icon: '🇮🇹', label: 'Italy', href: '#italy' },
+          { icon: '🇫🇷', label: 'France', href: '#france' },
+          { icon: '🇦🇱', label: 'Albania', href: '#albania' },
+          { icon: '🇲🇽', label: 'Mexico', href: '#mexico' },
+          { icon: '🇧🇷', label: 'Brazil', href: '#brazil' },
+          { icon: '🇬🇧', label: 'United Kingdom', href: '#uk' },
+          { icon: '🇩🇪', label: 'Germany', href: '#germany' },
+          { icon: '🇳🇱', label: 'Netherlands', href: '#netherlands' },
+        ],
+        moreLabel: 'See more countries',
+        moreUrl: '#all-countries',
+      }
+
       // 2. Seed Home Page if not present
       if (!existingSlugs.has('home')) {
         await payload.create({
@@ -169,6 +199,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
               'Esta Homepage, igual que About Us, Reviews o Terms & Conditions, está montada directamente desde la colección Pages de Payload.',
             layout: [
               sampleImageCardsBlock,
+              samplePillsSectionBlock,
               {
                 blockType: 'features',
                 heading: 'Dos modos de trabajo en un mismo proyecto',
@@ -378,19 +409,36 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
         })
       }
 
-      // 6. Ensure existing 'home' and 'about-us' pages also include the new 'imageCards' block if created previously
+      // 6. Ensure existing 'home' and 'about-us' pages also include the new 'imageCards' and 'pillsSection' blocks if created previously
       for (const targetSlug of ['home', 'about-us']) {
         const existingDoc = existingPages.docs.find((p) => p.slug === targetSlug)
         if (existingDoc) {
-          const hasImageCards = (existingDoc.layout || []).some(
-            (b) => b.blockType === 'imageCards',
-          )
+          const currentLayout = [...(existingDoc.layout || [])]
+          let needsUpdate = false
+
+          const hasImageCards = currentLayout.some((b) => b.blockType === 'imageCards')
           if (!hasImageCards) {
+            currentLayout.unshift(sampleImageCardsBlock)
+            needsUpdate = true
+          }
+
+          const hasPillsSection = currentLayout.some((b) => b.blockType === 'pillsSection')
+          if (!hasPillsSection) {
+            const imageCardsIdx = currentLayout.findIndex((b) => b.blockType === 'imageCards')
+            if (imageCardsIdx >= 0) {
+              currentLayout.splice(imageCardsIdx + 1, 0, samplePillsSectionBlock)
+            } else {
+              currentLayout.unshift(samplePillsSectionBlock)
+            }
+            needsUpdate = true
+          }
+
+          if (needsUpdate) {
             await payload.update({
               collection: 'pages',
               id: existingDoc.id,
               data: {
-                layout: [sampleImageCardsBlock, ...(existingDoc.layout || [])],
+                layout: currentLayout,
               },
             })
           }

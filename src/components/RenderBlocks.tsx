@@ -4,6 +4,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Payload } from 'payload'
 import type { Exhibition, Media, Page, Review } from '@/payload-types'
 import { ImageCardsSection } from './ImageCardsSection'
+import { PillsSection } from './PillsSection'
 
 type Props = {
   blocks: Page['layout']
@@ -28,6 +29,19 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   key={key}
                   heading={block.heading}
                   cards={block.cards}
+                />
+              )
+            }
+
+            case 'pillsSection': {
+              return (
+                <PillsSection
+                  key={key}
+                  title={block.title}
+                  description={block.description}
+                  pills={block.pills}
+                  moreLabel={block.moreLabel}
+                  moreUrl={block.moreUrl}
                 />
               )
             }

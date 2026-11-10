@@ -171,6 +171,21 @@ export interface Page {
             blockType: 'imageCards';
           }
         | {
+            title: string;
+            description?: string | null;
+            pills: {
+              icon?: string | null;
+              label: string;
+              href?: string | null;
+              id?: string | null;
+            }[];
+            moreLabel?: string | null;
+            moreUrl?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pillsSection';
+          }
+        | {
             richText: {
               root: {
                 type: string;
@@ -593,6 +608,24 @@ export interface PagesSelect<T extends boolean = true> {
                     description?: T;
                     id?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        pillsSection?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              pills?:
+                | T
+                | {
+                    icon?: T;
+                    label?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              moreLabel?: T;
+              moreUrl?: T;
               id?: T;
               blockName?: T;
             };
