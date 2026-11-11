@@ -1,14 +1,25 @@
 import type { CollectionConfig } from 'payload'
+import { authenticated } from '../access/authenticated'
+import { publishedOrAuthenticated } from '../access/publishedOrAuthenticated'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
     useAsTitle: 'title',
     group: 'Content',
-    defaultColumns: ['title', 'status', 'publishedAt', 'updatedAt'],
+    defaultColumns: ['title', '_status', 'publishedAt', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    read: publishedOrAuthenticated,
+    readVersions: authenticated,
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 375,
+      },
+    },
+    maxPerDoc: 50,
   },
   fields: [
     {
@@ -23,19 +34,6 @@ export const Posts: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'draft',
-      options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Published', value: 'published' },
-      ],
       admin: {
         position: 'sidebar',
       },

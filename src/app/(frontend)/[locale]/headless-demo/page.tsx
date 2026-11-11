@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import React from 'react'
@@ -43,12 +44,15 @@ export default async function HeadlessTemplateDemoPage({ params }: Args) {
   const payload = await getPayload({ config: await config })
   await ensureSeedData(payload)
   const dict = getDictionary(locale)
+  const { isEnabled: isDraftMode } = await draftMode()
 
   // Consulta directa desde el template (Local API) o equivalente vía fetch('/api/...')
   const [aboutPageRes, reviewsRes, allPagesRes] = await Promise.all([
     payload.find({
       collection: 'pages',
       locale,
+      draft: isDraftMode,
+      overrideAccess: isDraftMode,
       where: { slug: { equals: 'about-us' } },
       limit: 1,
     }),
@@ -62,12 +66,14 @@ export default async function HeadlessTemplateDemoPage({ params }: Args) {
     payload.find({
       collection: 'pages',
       locale,
+      draft: isDraftMode,
+      overrideAccess: isDraftMode,
       limit: 10,
       select: {
         title: true,
         slug: true,
         template: true,
-        status: true,
+        _status: true,
         updatedAt: true,
       },
     }),

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { authenticated } from '../access/authenticated'
 
 export const Exhibitions: CollectionConfig = {
   slug: 'exhibitions',
@@ -9,6 +10,10 @@ export const Exhibitions: CollectionConfig = {
   },
   access: {
     read: () => true,
+    readVersions: authenticated,
+  },
+  versions: {
+    maxPerDoc: 50,
   },
   fields: [
     {

@@ -405,7 +405,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             title: 'Homepage',
             slug: 'home',
             template: 'landing',
-            status: 'published',
+            _status: 'published',
             ...homeHeroData,
             layout: [
               sampleImageCardsBlock,
@@ -464,7 +464,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             title: 'About Us',
             slug: 'about-us',
             template: 'default',
-            status: 'published',
+            _status: 'published',
             ...aboutHeroData,
             layout: [
               {
@@ -734,7 +734,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
               title: legalPage.title,
               slug: legalPage.slug,
               template: 'legal',
-              status: 'published',
+              _status: 'published',
               heroType: 'none',
               heroHeading: legalPage.heroHeading,
               heroSubheading: legalPage.heroSubheading,
@@ -760,7 +760,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             title: 'Reviews',
             slug: 'reviews',
             template: 'default',
-            status: 'published',
+            _status: 'published',
             heroType: 'mediumImpact',
             heroHeading: 'Reviews y Experiencias',
             heroSubheading:
@@ -872,6 +872,28 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
               },
             })
           }
+        }
+      }
+
+      // 7. Backfill initial published version for legacy pages created before versions/drafts were enabled
+      for (const existingDoc of existingPages.docs) {
+        const existingVersions = await payload.findVersions({
+          collection: 'pages',
+          where: { parent: { equals: existingDoc.id } },
+          limit: 1,
+          overrideAccess: true,
+        })
+
+        if (existingVersions.totalDocs === 0) {
+          await payload.update({
+            collection: 'pages',
+            id: existingDoc.id,
+            locale: DEFAULT_LOCALE,
+            overrideAccess: true,
+            data: {
+              _status: 'published',
+            },
+          })
         }
       }
     } catch (err) {

@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+import { authenticated } from '../access/authenticated'
+
 export const VisitorInfo: GlobalConfig = {
   slug: 'visitor-info',
   label: 'Visitor',
@@ -8,6 +10,10 @@ export const VisitorInfo: GlobalConfig = {
   },
   access: {
     read: () => true,
+    readVersions: authenticated,
+  },
+  versions: {
+    max: 50,
   },
   fields: [
     {

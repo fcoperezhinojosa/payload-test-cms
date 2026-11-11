@@ -1,4 +1,6 @@
 import React from 'react'
+import { draftMode } from 'next/headers'
+import { redirect } from 'next/navigation'
 import type { Payload } from 'payload'
 import type { Page } from '@/payload-types'
 import { getLocaleMeta, type LocaleCode } from '@/lib/i18n'
@@ -11,14 +13,23 @@ type Props = {
   payload: Payload
   locale: LocaleCode
   dict: Dictionary
+  isDraftMode?: boolean
 }
 
-export async function PageTemplate({ page, payload, locale, dict }: Props) {
+export async function PageTemplate({ page, payload, locale, dict, isDraftMode = false }: Props) {
   const template = page.template || 'default'
   const pageFont = page.pageFont && page.pageFont !== 'inherit' ? page.pageFont : undefined
   const pageTheme = page.pageTheme && page.pageTheme !== 'inherit' ? page.pageTheme : undefined
   const customBg = page.customBackgroundColor?.trim() || ''
   const localeMeta = getLocaleMeta(locale)
+  const targetPath = page.slug === 'home' ? `/${locale}` : `/${locale}/${page.slug}`
+
+  async function exitPreview() {
+    'use server'
+    const draft = await draftMode()
+    draft.disable()
+    redirect(targetPath)
+  }
 
   const updatedDate = new Date(page.updatedAt).toLocaleDateString(localeMeta.dateLocale, {
     day: 'numeric',
@@ -53,8 +64,20 @@ export async function PageTemplate({ page, payload, locale, dict }: Props) {
           <span>
             {dict.inspector.background}: <code>{customBg || pageTheme || 'global (light)'}</code>
           </span>
+          {page._status && (
+            <span>
+              status: <code>{page._status}</code>
+            </span>
+          )}
         </div>
         <div className="cms-inspector-actions">
+          {isDraftMode && (
+            <form action={exitPreview} style={{ display: 'inline' }}>
+              <button type="submit" className="cms-action-link">
+                Exit Preview
+              </button>
+            </form>
+          )}
           <a
             href="/admin/globals/site-settings"
             target="_blank"

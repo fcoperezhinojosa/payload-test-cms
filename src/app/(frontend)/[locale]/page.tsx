@@ -7,6 +7,7 @@ import React from 'react'
 import config from '@/payload.config'
 import { PageTemplate } from '@/components/PageTemplate'
 import { ensureSeedData } from '@/lib/ensureSeedData'
+import { getPageBySlug } from '@/lib/getPageBySlug'
 import { DEFAULT_LOCALE, isValidLocale, SUPPORTED_LOCALES } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionaries'
 
@@ -23,14 +24,7 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const payload = await getPayload({ config: await config })
   await ensureSeedData(payload)
 
-  const res = await payload.find({
-    collection: 'pages',
-    locale,
-    where: {
-      slug: { equals: 'home' },
-    },
-    limit: 1,
-  })
+  const { page } = await getPageBySlug(payload, 'home', locale)
 
   const alternates = {
     canonical: `/${locale}`,
@@ -40,7 +34,6 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
     },
   }
 
-  const page = res.docs[0]
   if (!page) {
     return {
       title: 'Home | Payload CMS',
@@ -67,18 +60,7 @@ export default async function HomePage({ params }: Args) {
   await ensureSeedData(payload)
   const dict = getDictionary(locale)
 
-  const result = await payload.find({
-    collection: 'pages',
-    locale,
-    where: {
-      slug: {
-        equals: 'home',
-      },
-    },
-    limit: 1,
-  })
-
-  const homePage = result.docs[0]
+  const { page: homePage, isDraftMode } = await getPageBySlug(payload, 'home', locale)
 
   if (!homePage) {
     return (
@@ -92,5 +74,13 @@ export default async function HomePage({ params }: Args) {
     )
   }
 
-  return <PageTemplate page={homePage} payload={payload} locale={locale} dict={dict} />
+  return (
+    <PageTemplate
+      page={homePage}
+      payload={payload}
+      locale={locale}
+      dict={dict}
+      isDraftMode={isDraftMode}
+    />
+  )
 }

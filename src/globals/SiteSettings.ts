@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
+import { authenticated } from '../access/authenticated'
 import { DEFAULT_FOOTER, DEFAULT_HEADER } from '../lib/siteChrome'
 
 export const SiteSettings: GlobalConfig = {
@@ -10,6 +11,10 @@ export const SiteSettings: GlobalConfig = {
   },
   access: {
     read: () => true,
+    readVersions: authenticated,
+  },
+  versions: {
+    max: 50,
   },
   fields: [
     {

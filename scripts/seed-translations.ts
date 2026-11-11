@@ -190,6 +190,7 @@ for (const locale of orderedLocales) {
       locale,
       overrideAccess: true,
       data: {
+        _status: page._status || 'published',
         title: tr(page.title, locale) as string,
         heroHeading: tr(page.heroHeading, locale),
         heroSubheading: tr(page.heroSubheading, locale),

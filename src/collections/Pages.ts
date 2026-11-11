@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import { authenticated } from '../access/authenticated'
+import { publishedOrAuthenticated } from '../access/publishedOrAuthenticated'
 import { DestinationCardsBlock } from '../blocks/DestinationCardsBlock'
 import { FaqBlock } from '../blocks/FaqBlock'
 import { IconCardsBlock } from '../blocks/IconCardsBlock'
@@ -11,23 +13,43 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     group: 'Content',
-    defaultColumns: ['title', 'slug', 'template', 'status', 'updatedAt'],
+    defaultColumns: ['title', '_status', 'slug', 'template', 'updatedAt'],
     preview: (doc, { locale }) => {
       const slug = typeof doc?.slug === 'string' ? doc.slug : ''
       if (!slug) return null
       const loc = typeof locale === 'string' ? locale : 'en'
-      return slug === 'home' ? `/${loc}` : `/${loc}/${slug}`
+      const params = new URLSearchParams({
+        slug,
+        locale: loc,
+        collection: 'pages',
+      })
+      return `/api/preview?${params.toString()}`
     },
     livePreview: {
       url: ({ data, locale }) => {
         const slug = typeof data?.slug === 'string' ? data.slug : ''
         const loc = typeof locale === 'string' ? locale : locale?.code || 'en'
-        return slug === 'home' ? `/${loc}` : `/${loc}/${slug}`
+        if (!slug) return `/${loc}`
+        const params = new URLSearchParams({
+          slug,
+          locale: loc,
+          collection: 'pages',
+        })
+        return `/api/preview?${params.toString()}`
       },
     },
   },
   access: {
-    read: () => true,
+    read: publishedOrAuthenticated,
+    readVersions: authenticated,
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 375,
+      },
+    },
+    maxPerDoc: 50,
   },
   fields: [
     {
@@ -60,19 +82,6 @@ export const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Define el estilo de plantilla con el que se renderiza la página',
-      },
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'draft',
-      options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Published', value: 'published' },
-      ],
-      admin: {
-        position: 'sidebar',
       },
     },
     {

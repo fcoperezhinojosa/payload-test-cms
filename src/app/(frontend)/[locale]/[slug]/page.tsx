@@ -6,6 +6,7 @@ import React from 'react'
 import config from '@/payload.config'
 import { PageTemplate } from '@/components/PageTemplate'
 import { ensureSeedData } from '@/lib/ensureSeedData'
+import { getPageBySlug } from '@/lib/getPageBySlug'
 import { DEFAULT_LOCALE, isValidLocale, SUPPORTED_LOCALES } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionaries'
 
@@ -26,16 +27,7 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   await ensureSeedData(payload)
   const dict = getDictionary(locale)
 
-  const res = await payload.find({
-    collection: 'pages',
-    locale,
-    where: {
-      slug: { equals: slug },
-    },
-    limit: 1,
-  })
-
-  const page = res.docs[0]
+  const { page } = await getPageBySlug(payload, slug, locale)
   if (!page) {
     return {
       title: dict.common.pageNotFound,
@@ -67,22 +59,19 @@ export default async function DynamicCMSPage({ params }: Args) {
   await ensureSeedData(payload)
   const dict = getDictionary(locale)
 
-  const result = await payload.find({
-    collection: 'pages',
-    locale,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-    limit: 1,
-  })
-
-  const page = result.docs[0]
+  const { page, isDraftMode } = await getPageBySlug(payload, slug, locale)
 
   if (!page) {
     notFound()
   }
 
-  return <PageTemplate page={page} payload={payload} locale={locale} dict={dict} />
+  return (
+    <PageTemplate
+      page={page}
+      payload={payload}
+      locale={locale}
+      dict={dict}
+      isDraftMode={isDraftMode}
+    />
+  )
 }

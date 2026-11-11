@@ -155,7 +155,6 @@ export interface Page {
    * Define el estilo de plantilla con el que se renderiza la página
    */
   template: 'default' | 'landing' | 'legal';
-  status: 'draft' | 'published';
   /**
    * Permite usar una fuente específica en esta página o heredar la global.
    */
@@ -359,6 +358,7 @@ export interface Page {
   ogImage?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -487,7 +487,6 @@ export interface Post {
   id: number;
   title: string;
   slug: string;
-  status: 'draft' | 'published';
   publishedAt?: string | null;
   author?: (number | null) | User;
   featuredImage?: (number | null) | Media;
@@ -515,6 +514,7 @@ export interface Post {
     | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -686,7 +686,6 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   template?: T;
-  status?: T;
   pageFont?: T;
   pageTheme?: T;
   customBackgroundColor?: T;
@@ -882,6 +881,7 @@ export interface PagesSelect<T extends boolean = true> {
   ogImage?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -890,7 +890,6 @@ export interface PagesSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  status?: T;
   publishedAt?: T;
   author?: T;
   featuredImage?: T;
@@ -904,6 +903,7 @@ export interface PostsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
