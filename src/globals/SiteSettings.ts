@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+import { DEFAULT_FOOTER, DEFAULT_HEADER } from '../lib/siteChrome'
+
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site Settings',
@@ -91,6 +93,10 @@ export const SiteSettings: GlobalConfig = {
       name: 'navigation',
       type: 'array',
       label: 'Main Navigation Links',
+      admin: {
+        description:
+          'Enlaces del sitio. Elige dónde se muestra cada uno: Header, Footer (en una columna) o barra legal del Footer.',
+      },
       fields: [
         {
           name: 'label',
@@ -103,6 +109,27 @@ export const SiteSettings: GlobalConfig = {
           required: true,
         },
         {
+          name: 'location',
+          type: 'select',
+          label: 'Ubicación',
+          required: true,
+          defaultValue: 'header',
+          options: [
+            { label: 'Header', value: 'header' },
+            { label: 'Footer (columna de enlaces)', value: 'footer' },
+            { label: 'Footer (barra legal inferior)', value: 'footerLegal' },
+          ],
+        },
+        {
+          name: 'footerColumn',
+          type: 'text',
+          label: 'Columna del footer',
+          admin: {
+            description: 'Título de la columna donde aparece (ej. Support, Partners, Suntransfers).',
+            condition: (_, siblingData) => siblingData?.location === 'footer',
+          },
+        },
+        {
           name: 'newTab',
           type: 'checkbox',
           defaultValue: false,
@@ -112,12 +139,14 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'socialLinks',
       type: 'array',
+      admin: { description: 'Se muestran en la columna "Socials" del footer.' },
       fields: [
         {
           name: 'platform',
           type: 'select',
           required: true,
           options: [
+            { label: 'Facebook', value: 'facebook' },
             { label: 'Instagram', value: 'instagram' },
             { label: 'X / Twitter', value: 'x' },
             { label: 'YouTube', value: 'youtube' },
@@ -128,6 +157,96 @@ export const SiteSettings: GlobalConfig = {
           name: 'url',
           type: 'text',
           required: true,
+        },
+      ],
+    },
+    {
+      name: 'header',
+      type: 'group',
+      label: 'Header (Cabecera)',
+      admin: {
+        description: 'Cabecera del sitio, con el diseño de suntransfers.com: logo, enlaces, idioma/moneda y botón.',
+      },
+      fields: [
+        {
+          name: 'showLanguageCurrency',
+          type: 'checkbox',
+          label: 'Mostrar selector de idioma y moneda',
+          defaultValue: DEFAULT_HEADER.showLanguageCurrency,
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'languageLabel',
+              type: 'text',
+              label: 'Texto de idioma',
+              defaultValue: DEFAULT_HEADER.languageLabel,
+              admin: { width: '50%', condition: (_, siblingData) => siblingData?.showLanguageCurrency !== false },
+            },
+            {
+              name: 'currencyLabel',
+              type: 'text',
+              label: 'Texto de moneda',
+              defaultValue: DEFAULT_HEADER.currencyLabel,
+              admin: { width: '50%', condition: (_, siblingData) => siblingData?.showLanguageCurrency !== false },
+            },
+          ],
+        },
+        {
+          name: 'showCta',
+          type: 'checkbox',
+          label: 'Mostrar botón (My booking)',
+          defaultValue: DEFAULT_HEADER.showCta,
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'ctaLabel',
+              type: 'text',
+              label: 'Texto del botón',
+              defaultValue: DEFAULT_HEADER.ctaLabel,
+              admin: { width: '50%', condition: (_, siblingData) => siblingData?.showCta !== false },
+            },
+            {
+              name: 'ctaUrl',
+              type: 'text',
+              label: 'URL del botón',
+              defaultValue: DEFAULT_HEADER.ctaUrl,
+              admin: { width: '50%', condition: (_, siblingData) => siblingData?.showCta !== false },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'footer',
+      type: 'group',
+      label: 'Footer (Pie de página)',
+      admin: {
+        description:
+          'Pie de página con el diseño de suntransfers.com: columnas de enlaces, soporte, métodos de pago y copyright.',
+      },
+      fields: [
+        {
+          name: 'supportText',
+          type: 'text',
+          label: 'Texto de soporte',
+          defaultValue: DEFAULT_FOOTER.supportText,
+        },
+        {
+          name: 'showPaymentLogos',
+          type: 'checkbox',
+          label: 'Mostrar logos de métodos de pago',
+          defaultValue: DEFAULT_FOOTER.showPaymentLogos,
+        },
+        {
+          name: 'copyright',
+          type: 'text',
+          label: 'Copyright',
+          defaultValue: DEFAULT_FOOTER.copyright,
+          admin: { description: 'Usa {year} para insertar el año actual automáticamente.' },
         },
       ],
     },

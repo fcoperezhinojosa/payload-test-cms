@@ -1079,21 +1079,54 @@ export interface SiteSetting {
    * Si introduces un código de color (ej. #f1f5f9), se aplicará como color de fondo principal.
    */
   customBackgroundColor?: string | null;
+  /**
+   * Enlaces del sitio. Elige dónde se muestra cada uno: Header, Footer (en una columna) o barra legal del Footer.
+   */
   navigation?:
     | {
         label: string;
         url: string;
+        location: 'header' | 'footer' | 'footerLegal';
+        /**
+         * Título de la columna donde aparece (ej. Support, Partners, Suntransfers).
+         */
+        footerColumn?: string | null;
         newTab?: boolean | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Se muestran en la columna "Socials" del footer.
+   */
   socialLinks?:
     | {
-        platform: 'instagram' | 'x' | 'youtube' | 'linkedin';
+        platform: 'facebook' | 'instagram' | 'x' | 'youtube' | 'linkedin';
         url: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Cabecera del sitio, con el diseño de suntransfers.com: logo, enlaces, idioma/moneda y botón.
+   */
+  header?: {
+    showLanguageCurrency?: boolean | null;
+    languageLabel?: string | null;
+    currencyLabel?: string | null;
+    showCta?: boolean | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  /**
+   * Pie de página con el diseño de suntransfers.com: columnas de enlaces, soporte, métodos de pago y copyright.
+   */
+  footer?: {
+    supportText?: string | null;
+    showPaymentLogos?: boolean | null;
+    /**
+     * Usa {year} para insertar el año actual automáticamente.
+     */
+    copyright?: string | null;
+  };
   contactEmail?: string | null;
   contactPhone?: string | null;
   updatedAt?: string | null;
@@ -1161,6 +1194,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         label?: T;
         url?: T;
+        location?: T;
+        footerColumn?: T;
         newTab?: T;
         id?: T;
       };
@@ -1170,6 +1205,23 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         platform?: T;
         url?: T;
         id?: T;
+      };
+  header?:
+    | T
+    | {
+        showLanguageCurrency?: T;
+        languageLabel?: T;
+        currencyLabel?: T;
+        showCta?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  footer?:
+    | T
+    | {
+        supportText?: T;
+        showPaymentLogos?: T;
+        copyright?: T;
       };
   contactEmail?: T;
   contactPhone?: T;

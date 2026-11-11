@@ -1562,3 +1562,285 @@ code {
 .footer-links a:hover {
   color: var(--text);
 }
+
+/* ==========================================================
+   Header & Footer — réplica del diseño de suntransfers.com
+   ========================================================== */
+.st-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 16px;
+  font-size: 16px;
+  background: #fff;
+  border-bottom: 1px solid #cacccc;
+}
+
+.st-header a {
+  text-decoration: none;
+}
+
+.st-header__logo {
+  flex-grow: 4;
+}
+
+.st-logo-link {
+  display: flex;
+  align-items: center;
+  width: 162px;
+}
+
+.st-logo {
+  width: 100%;
+  height: auto;
+}
+
+.st-header__menu {
+  display: none;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.st-header__links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 2;
+}
+
+.st-header__link {
+  margin-right: 32px;
+  color: #264449;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.st-header__link:hover {
+  text-decoration: underline !important;
+}
+
+.st-header__dropdowns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.st-settings {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 16px;
+  color: #264449;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.st-settings svg:first-child {
+  width: 24px;
+  height: 14px;
+}
+
+.st-settings svg:last-child {
+  width: 10px;
+  height: 6px;
+  fill: #264449;
+}
+
+.st-header__button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  flex-grow: 1;
+  padding-left: 18px;
+}
+
+.st-button-mybooking {
+  max-height: 60px;
+  padding: 6px 16px;
+  background: #fff;
+  border: 1px solid #264449;
+  border-radius: 9999px;
+  color: #264449;
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  transition: background-color 0.2s;
+}
+
+.st-button-mybooking:hover,
+.st-button-mybooking:focus {
+  background: #f6f7f7;
+  color: #264449;
+}
+
+@media (min-width: 900px) {
+  .st-header {
+    padding: 0 10%;
+  }
+  .st-header__menu {
+    display: flex;
+  }
+}
+
+/* Footer */
+.st-footer {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.st-footer a {
+  text-decoration: none;
+}
+
+.st-footer__wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+.st-footer__wrapper--top {
+  background-color: #3d3d3d;
+  padding: 64px 0;
+}
+
+.st-footer__wrapper--bottom {
+  background-color: #1b1c1c;
+}
+
+.st-footer__container-max {
+  width: 100%;
+  max-width: 1150px;
+  padding: 0 16px;
+}
+
+.st-footer__container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 16px 0;
+}
+
+.st-footer__top {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.st-footer__top > svg {
+  flex-shrink: 0;
+  width: 112px;
+  height: 19px;
+}
+
+.st-footer__links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(auto, 240px));
+  gap: 32px;
+  width: 100%;
+}
+
+.st-footer__links-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.st-footer__links-title {
+  margin: 0;
+  color: #fff;
+  opacity: 0.6;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+}
+
+.st-footer__link {
+  color: #fff;
+  font-size: 14px;
+  transition: 0.3s ease all;
+}
+
+.st-footer__link:hover {
+  color: #fff;
+  text-decoration: underline !important;
+}
+
+.st-footer__link--social {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-footer__divider {
+  width: 100%;
+  height: 1px;
+  background-color: #fff;
+  opacity: 0.2;
+}
+
+.st-footer__payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.st-footer__support {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.st-footer__payment-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.st-footer__copyright {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  opacity: 0.7;
+  font-size: 12px;
+}
+
+.st-footer__copyright-text {
+  margin: 0;
+}
+
+.st-footer__copyright-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.st-footer__copyright-links .st-footer__link {
+  font-size: 12px;
+}
+
+@media (min-width: 900px) {
+  .st-footer__links {
+    grid-template-columns: repeat(4, 1fr) 80px;
+  }
+  .st-footer__top {
+    flex-direction: column;
+  }
+  .st-footer__payment-methods,
+  .st-footer__copyright {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
