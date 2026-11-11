@@ -91,6 +91,33 @@ describe('i18n & Payload Localization', () => {
     })
 
     expect(enHome.docs[0]?.title).toBeTruthy()
-    expect(fiHome.docs[0]?.title).toBe(enHome.docs[0]?.title)
+    expect(fiHome.docs[0]?.title).toBeTruthy()
+
+    const tempReview = await payload.create({
+      collection: 'reviews',
+      locale: 'en',
+      overrideAccess: true,
+      data: {
+        author: 'Fallback Test',
+        rating: 5,
+        featured: false,
+        comment: 'English fallback comment',
+      },
+    })
+
+    try {
+      const fiFallback = await payload.findByID({
+        collection: 'reviews',
+        id: tempReview.id,
+        locale: 'fi',
+      })
+      expect(fiFallback.comment).toBe('English fallback comment')
+    } finally {
+      await payload.delete({
+        collection: 'reviews',
+        id: tempReview.id,
+        overrideAccess: true,
+      })
+    }
   })
 })

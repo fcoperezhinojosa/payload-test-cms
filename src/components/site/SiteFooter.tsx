@@ -1,6 +1,6 @@
 import React from 'react'
 import type { SiteSetting } from '@/payload-types'
-import { DEFAULT_FOOTER, type ChromeLink, type FooterColumn } from '@/lib/siteChrome'
+import { DEFAULT_FOOTER, getLocalizedFooterChrome, type ChromeLink, type FooterColumn } from '@/lib/siteChrome'
 import type { LocaleCode } from '@/lib/i18n'
 import { SunLogoFooter } from './SunLogos'
 import { FacebookIcon, PaymentLogos, SupportClockIcon, XIcon } from './SunIcons'
@@ -23,11 +23,13 @@ export function SiteFooter({ settings, locale }: Props) {
   const f = settings?.footer
   const nav = settings?.navigation || []
 
+  const localizedChrome = getLocalizedFooterChrome(locale)
+
   // Columnas: enlaces de navegación con ubicación "footer", agrupados por "footerColumn"
   const grouped = new Map<string, ChromeLink[]>()
   for (const n of nav) {
     if (n.location !== 'footer') continue
-    const title = n.footerColumn?.trim() || 'Links'
+    const title = n.footerColumn?.trim() || localizedChrome.linksColumn
     grouped.set(title, [...(grouped.get(title) || []), { label: n.label, url: n.url, newTab: n.newTab }])
   }
   const navColumns: FooterColumn[] = Array.from(grouped, ([title, links]) => ({ title, links }))
@@ -44,11 +46,11 @@ export function SiteFooter({ settings, locale }: Props) {
   const defaultSocials = DEFAULT_FOOTER.columns.find((c) => c.title === 'Socials')?.links || []
   const columns: FooterColumn[] = [
     ...(navColumns.length ? navColumns : defaultNavColumns),
-    { title: 'Socials', links: socials.length ? socials : defaultSocials },
+    { title: localizedChrome.socialsColumn, links: socials.length ? socials : defaultSocials },
   ]
 
   const cmsLegal = nav.filter((n) => n.location === 'footerLegal')
-  const legalLinks: ChromeLink[] = cmsLegal.length ? cmsLegal : DEFAULT_FOOTER.legalLinks
+  const legalLinks: ChromeLink[] = cmsLegal.length ? cmsLegal : localizedChrome.legalLinks
   const supportText = f?.supportText ?? DEFAULT_FOOTER.supportText
   const showPayments = f?.showPaymentLogos ?? DEFAULT_FOOTER.showPaymentLogos
   const copyright = (f?.copyright || DEFAULT_FOOTER.copyright).replace(
