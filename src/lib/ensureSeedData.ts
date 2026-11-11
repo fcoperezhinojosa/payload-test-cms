@@ -1,4 +1,5 @@
 import type { Payload } from 'payload'
+import { DEFAULT_LOCALE } from './i18n'
 
 type LexicalParagraph = {
   type: 'heading' | 'paragraph'
@@ -71,10 +72,13 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
   seedPromise = (async () => {
     try {
       // 0. Ensure Site Settings global defaults (Poppins + Light theme)
-      const currentSettings = await payload.findGlobal({ slug: 'site-settings' }).catch(() => null)
+      const currentSettings = await payload
+        .findGlobal({ slug: 'site-settings', locale: DEFAULT_LOCALE })
+        .catch(() => null)
       if (currentSettings && (!currentSettings.fontFamily || !currentSettings.backgroundTheme)) {
         await payload.updateGlobal({
           slug: 'site-settings',
+          locale: DEFAULT_LOCALE,
           data: {
             siteName: currentSettings.siteName || 'Payload Museum & CMS',
             fontFamily: currentSettings.fontFamily || 'poppins',
@@ -86,6 +90,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
       // 1. Seed initial reviews if none exist
       const existingReviews = await payload.find({
         collection: 'reviews',
+        locale: DEFAULT_LOCALE,
         limit: 1,
       })
 
@@ -128,6 +133,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
         for (const review of sampleReviews) {
           await payload.create({
             collection: 'reviews',
+            locale: DEFAULT_LOCALE,
             data: review,
           })
         }
@@ -135,6 +141,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
 
       const existingPages = await payload.find({
         collection: 'pages',
+        locale: DEFAULT_LOCALE,
         limit: 100,
       })
       const existingSlugs = new Set(existingPages.docs.map((p) => p.slug))
@@ -393,6 +400,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
       if (!existingSlugs.has('home')) {
         await payload.create({
           collection: 'pages',
+          locale: DEFAULT_LOCALE,
           data: {
             title: 'Homepage',
             slug: 'home',
@@ -451,6 +459,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
       if (!existingSlugs.has('about-us')) {
         await payload.create({
           collection: 'pages',
+          locale: DEFAULT_LOCALE,
           data: {
             title: 'About Us',
             slug: 'about-us',
@@ -515,72 +524,238 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
         })
       }
 
-      // 4. Seed Terms and Conditions Page if not present
-      if (!existingSlugs.has('terms-and-conditions')) {
-        await payload.create({
-          collection: 'pages',
-          data: {
-            title: 'Terms and Conditions',
-            slug: 'terms-and-conditions',
-            template: 'legal',
-            status: 'published',
-            heroType: 'none',
-            heroHeading: 'Términos y Condiciones de Uso',
-            heroSubheading:
-              'Documento legal gestionado desde Payload CMS utilizando la plantilla "Documento Legal" (template: legal).',
-            layout: [
-              {
-                blockType: 'content',
-                richText: buildLexicalRichText([
-                  {
-                    type: 'heading',
-                    tag: 'h2',
-                    text: '1. Aceptación de los Términos',
-                  },
-                  {
-                    type: 'paragraph',
-                    text: 'Al acceder y utilizar este sitio web, aceptas cumplir con los presentes Términos y Condiciones. Este texto se gestiona íntegramente desde el panel de administración de Payload CMS para que el equipo legal pueda actualizarlo en cualquier momento.',
-                  },
-                  {
-                    type: 'heading',
-                    tag: 'h2',
-                    text: '2. Uso Permitido de la Plataforma',
-                  },
-                  {
-                    type: 'paragraph',
-                    text: 'El contenido publicado en las páginas del sitio (incluyendo textos, imágenes, servicios y reseñas) tiene fines informativos y comerciales. Queda prohibida su reproducción no autorizada.',
-                  },
-                  {
-                    type: 'heading',
-                    tag: 'h2',
-                    text: '3. Propiedad Intelectual',
-                  },
-                  {
-                    type: 'paragraph',
-                    text: 'Todos los derechos de propiedad intelectual del diseño, código fuente y contenidos editoriales pertenecen a sus respectivos titulares.',
-                  },
-                  {
-                    type: 'heading',
-                    tag: 'h2',
-                    text: '4. Modificaciones del Documento',
-                  },
-                  {
-                    type: 'paragraph',
-                    text: 'Nos reservamos el derecho de actualizar estas condiciones en cualquier momento desde el CMS. La fecha de última actualización reflejada arriba se sincroniza automáticamente con el campo updatedAt de Payload.',
-                  },
-                ]),
-              },
-            ],
-            metaTitle: 'Terms and Conditions | Términos Legales',
-            metaDescription: 'Términos y condiciones legales del sitio web.',
-          },
-        })
+      // 4. Seed Legal Pages (Terms and Conditions, Privacy Policy, Cookies Policy, Accessibility Statement)
+      const legalPagesSeed: Array<{
+        title: string
+        slug: string
+        heroHeading: string
+        heroSubheading: string
+        metaTitle: string
+        metaDescription: string
+        sections: LexicalParagraph[]
+      }> = [
+        {
+          title: 'Terms and Conditions',
+          slug: 'terms-and-conditions',
+          heroHeading: 'Términos y Condiciones de Uso',
+          heroSubheading:
+            'Documento legal gestionado desde Payload CMS utilizando la plantilla "Documento Legal" (template: legal).',
+          metaTitle: 'Terms and Conditions | Términos Legales',
+          metaDescription: 'Términos y condiciones legales del sitio web.',
+          sections: [
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '1. Aceptación de los Términos',
+            },
+            {
+              type: 'paragraph',
+              text: 'Al acceder y utilizar este sitio web, aceptas cumplir con los presentes Términos y Condiciones. Este texto se gestiona íntegramente desde el panel de administración de Payload CMS para que el equipo legal pueda actualizarlo en cualquier momento.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '2. Uso Permitido de la Plataforma',
+            },
+            {
+              type: 'paragraph',
+              text: 'El contenido publicado en las páginas del sitio (incluyendo textos, imágenes, servicios y reseñas) tiene fines informativos y comerciales. Queda prohibida su reproducción no autorizada.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '3. Propiedad Intelectual',
+            },
+            {
+              type: 'paragraph',
+              text: 'Todos los derechos de propiedad intelectual del diseño, código fuente y contenidos editoriales pertenecen a sus respectivos titulares.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '4. Modificaciones del Documento',
+            },
+            {
+              type: 'paragraph',
+              text: 'Nos reservamos el derecho de actualizar estas condiciones en cualquier momento desde el CMS. La fecha de última actualización reflejada arriba se sincroniza automáticamente con el campo updatedAt de Payload.',
+            },
+          ],
+        },
+        {
+          title: 'Privacy Policy',
+          slug: 'privacy-policy',
+          heroHeading: 'Política de Privacidad',
+          heroSubheading:
+            'Información sobre cómo recopilamos, utilizamos y protegemos tus datos personales, gestionada desde Payload CMS (template: legal).',
+          metaTitle: 'Privacy Policy | Política de Privacidad',
+          metaDescription: 'Política de privacidad y protección de datos personales del sitio web.',
+          sections: [
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '1. Responsable del Tratamiento',
+            },
+            {
+              type: 'paragraph',
+              text: 'Tratamos tus datos personales de conformidad con la normativa vigente en materia de protección de datos (incluyendo el RGPD). Puedes consultar y actualizar este documento en cualquier momento desde el panel de administración de Payload CMS.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '2. Datos que Recopilamos',
+            },
+            {
+              type: 'paragraph',
+              text: 'Recopilamos únicamente la información necesaria para prestar nuestros servicios, gestionar reservas, responder consultas de soporte y enviar comunicaciones comerciales cuando hayas otorgado tu consentimiento expreso.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '3. Finalidad y Base Legal',
+            },
+            {
+              type: 'paragraph',
+              text: 'Los datos se utilizan para la ejecución contractual de los servicios solicitados, el cumplimiento de obligaciones legales, la mejora continua de la plataforma y, en su caso, el envío de boletines informativos.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '4. Conservación y Derechos del Usuario',
+            },
+            {
+              type: 'paragraph',
+              text: 'Conservaremos tus datos durante el tiempo estrictamente necesario para cumplir con las finalidades descritas. En todo momento puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad contactando con nuestro equipo.',
+            },
+          ],
+        },
+        {
+          title: 'Cookies Policy',
+          slug: 'cookies-policy',
+          heroHeading: 'Política de Cookies',
+          heroSubheading:
+            'Detalles sobre el uso de cookies y tecnologías similares en esta plataforma, gestionada desde Payload CMS (template: legal).',
+          metaTitle: 'Cookies Policy | Política de Cookies',
+          metaDescription: 'Política de cookies y gestión de preferencias de navegación.',
+          sections: [
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '1. ¿Qué son las Cookies?',
+            },
+            {
+              type: 'paragraph',
+              text: 'Las cookies son pequeños archivos de texto que se almacenan en tu navegador cuando visitas un sitio web. Permiten recordar tus preferencias, mantener tu sesión activa y analizar el rendimiento de la plataforma.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '2. Tipos de Cookies que Utilizamos',
+            },
+            {
+              type: 'paragraph',
+              text: 'Utilizamos cookies técnicas o estrictamente necesarias para el funcionamiento del sitio, cookies de personalización (como idioma o moneda seleccionada) y, previo consentimiento, cookies analíticas para medir el uso y mejorar la experiencia.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '3. Gestión y Desactivación',
+            },
+            {
+              type: 'paragraph',
+              text: 'Puedes configurar, bloquear o eliminar las cookies en cualquier momento desde los ajustes de tu navegador. Ten en cuenta que deshabilitar ciertas cookies técnicas puede afectar a determinadas funcionalidades del sitio.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '4. Actualizaciones de esta Política',
+            },
+            {
+              type: 'paragraph',
+              text: 'Podemos actualizar esta Política de Cookies para reflejar cambios normativos o técnicos. La fecha de última actualización visible en la cabecera corresponde al campo updatedAt gestionado por Payload CMS.',
+            },
+          ],
+        },
+        {
+          title: 'Accessibility Statement',
+          slug: 'accessibility-statement',
+          heroHeading: 'Declaración de Accesibilidad',
+          heroSubheading:
+            'Compromiso con la accesibilidad digital y la experiencia inclusiva para todas las personas usuarias, gestionada desde Payload CMS (template: legal).',
+          metaTitle: 'Accessibility Statement | Declaración de Accesibilidad',
+          metaDescription:
+            'Declaración de accesibilidad digital, estándares aplicados y canales de contacto.',
+          sections: [
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '1. Compromiso con la Accesibilidad',
+            },
+            {
+              type: 'paragraph',
+              text: 'Trabajamos de forma continua para garantizar que nuestro sitio web y nuestros servicios digitales sean accesibles para el mayor número posible de personas, independientemente de sus capacidades o tecnologías de asistencia utilizadas.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '2. Estándares y Buenas Prácticas',
+            },
+            {
+              type: 'paragraph',
+              text: 'Nos esforzamos por alinear la interfaz con las Pautas de Accesibilidad para el Contenido Web (WCAG 2.1, nivel AA), cuidando la jerarquía semántica de encabezados, el contraste de color, la navegación mediante teclado y las etiquetas descriptivas.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '3. Mejora Continua y Compatibilidad',
+            },
+            {
+              type: 'paragraph',
+              text: 'Revisamos periódicamente nuestras plantillas y bloques de contenido en Payload CMS para detectar posibles barreras de accesibilidad y garantizar la compatibilidad con lectores de pantalla y navegadores modernos.',
+            },
+            {
+              type: 'heading',
+              tag: 'h2',
+              text: '4. Contacto y Notificación de Incidencias',
+            },
+            {
+              type: 'paragraph',
+              text: 'Si encuentras alguna dificultad para acceder a cualquier contenido o funcionalidad, o deseas enviarnos sugerencias de mejora, ponte en contacto con nuestro equipo de atención al cliente para que podamos asistirte lo antes posible.',
+            },
+          ],
+        },
+      ]
+
+      for (const legalPage of legalPagesSeed) {
+        if (!existingSlugs.has(legalPage.slug)) {
+          await payload.create({
+            collection: 'pages',
+            locale: DEFAULT_LOCALE,
+            data: {
+              title: legalPage.title,
+              slug: legalPage.slug,
+              template: 'legal',
+              status: 'published',
+              heroType: 'none',
+              heroHeading: legalPage.heroHeading,
+              heroSubheading: legalPage.heroSubheading,
+              layout: [
+                {
+                  blockType: 'content',
+                  richText: buildLexicalRichText(legalPage.sections),
+                },
+              ],
+              metaTitle: legalPage.metaTitle,
+              metaDescription: legalPage.metaDescription,
+            },
+          })
+        }
       }
 
       // 5. Seed Reviews Page if not present
       if (!existingSlugs.has('reviews')) {
         await payload.create({
           collection: 'pages',
+          locale: DEFAULT_LOCALE,
           data: {
             title: 'Reviews',
             slug: 'reviews',
@@ -690,6 +865,7 @@ export async function ensureSeedData(payload: Payload): Promise<void> {
             await payload.update({
               collection: 'pages',
               id: existingDoc.id,
+              locale: DEFAULT_LOCALE,
               data: {
                 ...(hasOverlayUsps ? {} : heroPatch),
                 layout: currentLayout,

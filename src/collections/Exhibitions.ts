@@ -15,6 +15,7 @@ export const Exhibitions: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -63,6 +64,7 @@ export const Exhibitions: CollectionConfig = {
     {
       name: 'location',
       type: 'text',
+      localized: true,
       admin: {
         placeholder: 'Ej. Sala Principal - Planta 2',
       },
@@ -75,10 +77,12 @@ export const Exhibitions: CollectionConfig = {
     {
       name: 'summary',
       type: 'textarea',
+      localized: true,
     },
     {
       name: 'description',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'artists',
@@ -99,6 +103,7 @@ export const Exhibitions: CollectionConfig = {
         {
           name: 'caption',
           type: 'text',
+          localized: true,
         },
       ],
     },

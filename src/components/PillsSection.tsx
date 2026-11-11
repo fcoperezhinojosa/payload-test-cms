@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { localizeHref, type LocaleCode } from '@/lib/i18n'
 
 export type PillItem = {
   id?: string | null
@@ -14,6 +15,7 @@ export type PillsSectionProps = {
   pills?: PillItem[] | null
   moreLabel?: string | null
   moreUrl?: string | null
+  locale: LocaleCode
 }
 
 export function PillsSection({
@@ -22,6 +24,7 @@ export function PillsSection({
   pills,
   moreLabel,
   moreUrl,
+  locale,
 }: PillsSectionProps) {
   if (!pills || pills.length === 0) {
     return null
@@ -51,7 +54,7 @@ export function PillsSection({
             return (
               <Link
                 key={pill.id || index}
-                href={pill.href}
+                href={localizeHref(pill.href, locale)}
                 className="pill-item pill-item--link"
               >
                 {content}
@@ -69,7 +72,7 @@ export function PillsSection({
 
       {moreLabel && (
         <div className="pills-footer">
-          <Link href={moreUrl || '#'} className="pills-more-link">
+          <Link href={localizeHref(moreUrl || '#', locale)} className="pills-more-link">
             <span>{moreLabel}</span>
             <svg
               width="14"

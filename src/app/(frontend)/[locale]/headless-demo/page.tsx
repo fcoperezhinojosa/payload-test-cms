@@ -1,37 +1,67 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import React from 'react'
 
 import config from '@/payload.config'
 import { ensureSeedData } from '@/lib/ensureSeedData'
+import { DEFAULT_LOCALE, isValidLocale, SUPPORTED_LOCALES } from '@/lib/i18n'
+import { getDictionary } from '@/lib/dictionaries'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Modo Headless (Template Propio) | Payload CMS',
-  description:
-    'Ejemplo de un template React fijo que consulta datos a Payload en modo Headless (Local API / REST API).',
+type Args = {
+  params: Promise<{ locale: string }>
 }
 
-export default async function HeadlessTemplateDemoPage() {
+export async function generateMetadata({ params }: Args): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+  const dict = getDictionary(locale)
+
+  return {
+    title: dict.headless.metaTitle,
+    description: dict.headless.metaDescription,
+    alternates: {
+      canonical: `/${locale}/headless-demo`,
+      languages: {
+        ...Object.fromEntries(
+          SUPPORTED_LOCALES.map(({ code }) => [code, `/${code}/headless-demo`]),
+        ),
+        'x-default': `/${DEFAULT_LOCALE}/headless-demo`,
+      },
+    },
+  }
+}
+
+export default async function HeadlessTemplateDemoPage({ params }: Args) {
+  const { locale } = await params
+  if (!isValidLocale(locale)) {
+    notFound()
+  }
+
   const payload = await getPayload({ config: await config })
   await ensureSeedData(payload)
+  const dict = getDictionary(locale)
 
   // Consulta directa desde el template (Local API) o equivalente vía fetch('/api/...')
   const [aboutPageRes, reviewsRes, allPagesRes] = await Promise.all([
     payload.find({
       collection: 'pages',
+      locale,
       where: { slug: { equals: 'about-us' } },
       limit: 1,
     }),
     payload.find({
       collection: 'reviews',
+      locale,
       where: { featured: { equals: true } },
       sort: '-rating',
       limit: 6,
     }),
     payload.find({
       collection: 'pages',
+      locale,
       limit: 10,
       select: {
         title: true,
@@ -54,27 +84,27 @@ export default async function HeadlessTemplateDemoPage() {
     <div className="headless-page">
       <div className="cms-inspector-bar">
         <div className="cms-inspector-info">
-          <span className="cms-pill cms-pill--headless">Modo Headless / Custom Template</span>
+          <span className="cms-pill cms-pill--headless">{dict.inspector.headlessMode}</span>
           <span>
-            Ruta fija: <code>src/app/(frontend)/headless-demo/page.tsx</code>
+            {dict.headless.fixedRoute}: <code>src/app/(frontend)/[locale]/headless-demo/page.tsx</code>
           </span>
         </div>
         <div className="cms-inspector-actions">
           <a
-            href="/api/pages?where[slug][equals]=about-us"
+            href={`/api/pages?where[slug][equals]=about-us&locale=${locale}`}
             target="_blank"
             rel="noopener noreferrer"
             className="cms-action-link"
           >
-            GET /api/pages?where[slug][equals]=about-us ↗
+            GET /api/pages?where[slug][equals]=about-us&amp;locale={locale} ↗
           </a>
           <a
-            href="/api/reviews"
+            href={`/api/reviews?locale=${locale}`}
             target="_blank"
             rel="noopener noreferrer"
             className="cms-action-link cms-action-link--secondary"
           >
-            GET /api/reviews ↗
+            GET /api/reviews?locale={locale} ↗
           </a>
         </div>
       </div>
@@ -82,24 +112,21 @@ export default async function HeadlessTemplateDemoPage() {
       <section className="headless-hero">
         <div className="headless-hero-grid">
           <div>
-            <span className="hero-eyebrow">Diseño Fijo en Código + Datos de Payload</span>
-            <h1>Template a Medida (Modo Headless)</h1>
-            <p className="hero-subheading">
-              A diferencia de <code>/about-us</code> o <code>/terms-and-conditions</code> (que se
-              montan y ordenan por bloques desde el CMS), esta vista tiene un{' '}
-              <strong>template HTML/React 100% fijo</strong> que consulta a Payload únicamente los
-              datos que necesita para rellenar su interfaz.
-            </p>
+            <span className="hero-eyebrow">{dict.headless.eyebrow}</span>
+            <h1>{dict.headless.heading}</h1>
+            <p className="hero-subheading">{dict.headless.subheading}</p>
           </div>
 
           <div className="headless-kpi-box">
             <div className="kpi-item">
               <span className="kpi-value">{averageRating} ★</span>
-              <span className="kpi-label">Valoración media ({reviews.length} reviews)</span>
+              <span className="kpi-label">
+                {dict.headless.avgRatingLabel} ({reviews.length} {dict.headless.reviewsWord})
+              </span>
             </div>
             <div className="kpi-item">
               <span className="kpi-value">{allPagesRes.totalDocs}</span>
-              <span className="kpi-label">Páginas activas en el CMS</span>
+              <span className="kpi-label">{dict.headless.activePagesLabel}</span>
             </div>
           </div>
         </div>
@@ -108,48 +135,45 @@ export default async function HeadlessTemplateDemoPage() {
       <div className="page-body">
         <div className="headless-comparison-grid">
           <div className="headless-panel">
-            <h2>1. Datos extraídos de la página &ldquo;About Us&rdquo;</h2>
-            <p className="panel-hint">
-              Consultado con <code>payload.find(&#123; collection: &apos;pages&apos;, where: &#123; slug: &#123; equals: &apos;about-us&apos; &#125; &#125; &#125;)</code>:
-            </p>
+            <h2>{dict.headless.section1Title}</h2>
+            <p className="panel-hint">{dict.headless.section1Hint}</p>
             {aboutPage ? (
               <dl className="data-list">
                 <div>
-                  <dt>Título en CMS:</dt>
+                  <dt>{dict.headless.cmsTitleLabel}</dt>
                   <dd>{aboutPage.title}</dd>
                 </div>
                 <div>
-                  <dt>Hero Heading:</dt>
+                  <dt>{dict.headless.heroHeadingLabel}</dt>
                   <dd>{aboutPage.heroHeading}</dd>
                 </div>
                 <div>
-                  <dt>Hero Subheading:</dt>
+                  <dt>{dict.headless.heroSubheadingLabel}</dt>
                   <dd>{aboutPage.heroSubheading}</dd>
                 </div>
                 <div>
-                  <dt>Bloques configurados:</dt>
-                  <dd>{aboutPage.layout?.length || 0} bloques</dd>
+                  <dt>{dict.headless.blocksConfiguredLabel}</dt>
+                  <dd>
+                    {aboutPage.layout?.length || 0} {dict.headless.blocksWord}
+                  </dd>
                 </div>
               </dl>
             ) : (
-              <p>No se encontró la página about-us.</p>
+              <p>{dict.headless.aboutNotFound}</p>
             )}
           </div>
 
           <div className="headless-panel">
-            <h2>2. Endpoints REST / GraphQL listos para usar</h2>
-            <p className="panel-hint">
-              Si tienes otro frontend externo o un componente cliente, puedes pedir los mismos datos
-              por HTTP:
-            </p>
+            <h2>{dict.headless.section2Title}</h2>
+            <p className="panel-hint">{dict.headless.section2Hint}</p>
             <pre className="code-snippet">
-              <code>{`// Ejemplo desde cualquier frontend (Headless REST API)
-const res = await fetch('/api/pages?where[slug][equals]=about-us')
+              <code>{`// Headless REST API (locale: ${locale})
+const res = await fetch('/api/pages?where[slug][equals]=about-us&locale=${locale}')
 const { docs } = await res.json()
 const page = docs[0]
 
-// Ejemplo consultando Reviews destacadas
-const reviewsRes = await fetch('/api/reviews?where[featured][equals]=true')
+// Featured reviews in ${locale}
+const reviewsRes = await fetch('/api/reviews?where[featured][equals]=true&locale=${locale}')
 const { docs: reviews } = await reviewsRes.json()`}</code>
             </pre>
           </div>
@@ -157,26 +181,23 @@ const { docs: reviews } = await reviewsRes.json()`}</code>
 
         <section className="cms-block">
           <div className="block-header">
-            <h2>Índice de Páginas en Payload (Consultado en vivo)</h2>
-            <p>
-              Todas estas páginas existen en la colección <code>pages</code> y tienen tanto su vista
-              directa como su endpoint JSON:
-            </p>
+            <h2>{dict.headless.indexTitle}</h2>
+            <p>{dict.headless.indexSubtitle}</p>
           </div>
           <div className="table-wrapper">
             <table className="cms-table">
               <thead>
                 <tr>
-                  <th>Título</th>
-                  <th>Slug</th>
-                  <th>Plantilla</th>
-                  <th>Vista Web (CMS)</th>
-                  <th>Endpoint Headless (JSON)</th>
+                  <th>{dict.headless.colTitle}</th>
+                  <th>{dict.headless.colSlug}</th>
+                  <th>{dict.headless.colTemplate}</th>
+                  <th>{dict.headless.colWebView}</th>
+                  <th>{dict.headless.colHeadlessEndpoint}</th>
                 </tr>
               </thead>
               <tbody>
                 {allPagesRes.docs.map((p) => {
-                  const webUrl = p.slug === 'home' ? '/' : `/${p.slug}`
+                  const webUrl = p.slug === 'home' ? `/${locale}` : `/${locale}/${p.slug}`
                   return (
                     <tr key={p.id}>
                       <td>
@@ -193,11 +214,11 @@ const { docs: reviews } = await reviewsRes.json()`}</code>
                       </td>
                       <td>
                         <a
-                          href={`/api/pages/${p.id}`}
+                          href={`/api/pages/${p.id}?locale=${locale}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          /api/pages/{p.id} ↗
+                          /api/pages/{p.id}?locale={locale} ↗
                         </a>
                       </td>
                     </tr>

@@ -15,6 +15,7 @@ export const Events: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -74,6 +75,7 @@ export const Events: CollectionConfig = {
         {
           name: 'location',
           type: 'text',
+          localized: true,
           admin: {
             width: '50%',
             placeholder: 'Ej. Auditorio Principal',
@@ -102,6 +104,7 @@ export const Events: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'artists',

@@ -1,11 +1,15 @@
 import React from 'react'
 import type { SiteSetting } from '@/payload-types'
 import { DEFAULT_FOOTER, type ChromeLink, type FooterColumn } from '@/lib/siteChrome'
+import type { LocaleCode } from '@/lib/i18n'
 import { SunLogoFooter } from './SunLogos'
 import { FacebookIcon, PaymentLogos, SupportClockIcon, XIcon } from './SunIcons'
 import { SiteLink } from './SiteLink'
 
-type Props = { settings: SiteSetting | null }
+type Props = {
+  settings: SiteSetting | null
+  locale: LocaleCode
+}
 
 const SOCIAL_LABELS: Record<string, string> = {
   facebook: 'Facebook',
@@ -15,7 +19,7 @@ const SOCIAL_LABELS: Record<string, string> = {
   linkedin: 'LinkedIn',
 }
 
-export function SiteFooter({ settings }: Props) {
+export function SiteFooter({ settings, locale }: Props) {
   const f = settings?.footer
   const nav = settings?.navigation || []
 
@@ -67,6 +71,7 @@ export function SiteFooter({ settings }: Props) {
                       <SiteLink
                         key={l.url + j}
                         href={l.url}
+                        locale={locale}
                         newTab={l.newTab}
                         className={`st-footer__link${l.icon && l.icon !== 'none' ? ' st-footer__link--social' : ''}`}
                       >
@@ -105,7 +110,7 @@ export function SiteFooter({ settings }: Props) {
             <p className="st-footer__copyright-text">{copyright}</p>
             <div className="st-footer__copyright-links">
               {legalLinks.map((l, i) => (
-                <SiteLink key={l.url + i} href={l.url} newTab={l.newTab} className="st-footer__link">
+                <SiteLink key={l.url + i} href={l.url} locale={locale} newTab={l.newTab} className="st-footer__link">
                   {l.label}
                 </SiteLink>
               ))}

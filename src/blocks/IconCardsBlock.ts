@@ -11,6 +11,7 @@ export const IconCardsBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
       defaultValue: 'Why book your transfers with Suntransfers?',
     },
@@ -67,6 +68,7 @@ export const IconCardsBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Card Title',
           admin: {
             placeholder: 'Great value',
@@ -76,6 +78,7 @@ export const IconCardsBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          localized: true,
           label: 'Card Description',
           admin: {
             placeholder:

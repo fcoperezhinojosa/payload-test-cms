@@ -11,12 +11,14 @@ export const NewsletterBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
       defaultValue: 'Join Our Community',
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       label: 'Description',
       defaultValue: 'Receive special deals and save up to 20% on bookings.',
     },
@@ -26,6 +28,7 @@ export const NewsletterBlock: Block = {
         {
           name: 'inputPlaceholder',
           type: 'text',
+          localized: true,
           label: 'Email Input Placeholder',
           defaultValue: 'Your email address',
           admin: {
@@ -36,6 +39,7 @@ export const NewsletterBlock: Block = {
           name: 'buttonLabel',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Button Label',
           defaultValue: 'Subscribe',
           admin: {
@@ -50,6 +54,7 @@ export const NewsletterBlock: Block = {
         {
           name: 'disclaimerText',
           type: 'text',
+          localized: true,
           label: 'Texto legal previo al enlace',
           defaultValue: 'By signing up, you agree to our',
           admin: {
@@ -59,6 +64,7 @@ export const NewsletterBlock: Block = {
         {
           name: 'termsLabel',
           type: 'text',
+          localized: true,
           label: 'Texto del enlace legal',
           defaultValue: 'Terms and Conditions.',
           admin: {

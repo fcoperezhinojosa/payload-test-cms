@@ -1,4 +1,5 @@
 import React from 'react'
+import type { LocaleCode } from '@/lib/i18n'
 
 export const FacebookIcon = () => (
   <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.0093 18.2723C15.1355 17.7739 18.3335 14.2604 18.3335 9.99982C18.3334 5.39767 14.6026 1.66703 10.0005 1.66681C5.39818 1.66681 1.66659 5.39753 1.6665 9.99982C1.6665 13.9079 4.3572 17.1871 7.98682 18.0877V12.5467H6.26807V9.99982H7.98682V8.90314C7.98682 8.63738 7.99828 8.38453 8.021 8.14532C8.03617 7.9855 8.05609 7.83151 8.08154 7.68341C8.11964 7.46172 8.16954 7.25314 8.23096 7.05743C8.2924 6.86164 8.36554 6.67873 8.45068 6.50861C9.04667 5.31774 10.2278 4.75178 12.0552 4.75177C12.1871 4.75177 12.3429 4.75803 12.5083 4.76935C12.6738 4.78067 12.8488 4.79681 13.019 4.81622C13.2743 4.84534 13.5188 4.88151 13.7036 4.91974C13.7652 4.93248 13.8201 4.94586 13.8667 4.9588V7.2674C13.67 7.2467 13.3282 7.23615 12.9038 7.23615C11.5376 7.23621 11.0093 7.75377 11.0093 9.09943V9.99982H13.7319L13.2642 12.5467H11.0093V18.2723Z" fill="currentColor"/></svg>
@@ -25,6 +26,95 @@ export const PaymentLogos = () => (
 export const FlagEnIcon = () => (
   <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 512 300"><defs><path id="flag-uk-a" d="M256,150 L512,150 L512,300 L256,150 Z M256,150 L256,300 L0,300 L256,150 Z M256,150 L0,150 L0,0 L256,150 Z M256,150 L256,0 L512,0 L256,150 Z"/></defs><g fill="none" fillRule="evenodd"><polygon fill="#00247D" fillRule="nonzero" points="0 0 0 300 512 300 512 0"/><path fill="#000" fillRule="nonzero" stroke="#FFF" strokeWidth="51.2" d="M0,0 L512,300 M512,0 L0,300"/><mask id="flag-uk-b" fill="#fff"><use xlinkHref="#flag-uk-a"/></mask><path fill="#000" fillRule="nonzero" stroke="#CF142B" strokeWidth="34.133" d="M0,0 L512,300 M512,0 L0,300" mask="url(#flag-uk-b)"/><path fill="#000" fillRule="nonzero" stroke="#FFF" strokeWidth="85.333" d="M256,0 L256,300 M0,150 L512,150"/><path fill="#000" fillRule="nonzero" stroke="#CF142B" strokeWidth="51.2" d="M256,0 L256,300 M0,150 L512,150"/></g></svg>
 )
+
+export const LocaleFlagIcon = ({ locale }: { locale: LocaleCode }) => {
+  switch (locale) {
+    case 'de':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="4.67" y="0" fill="#111111" />
+          <rect width="24" height="4.67" y="4.67" fill="#DD0000" />
+          <rect width="24" height="4.67" y="9.33" fill="#FFCE00" />
+        </svg>
+      )
+    case 'it':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="8" height="14" x="0" fill="#009246" />
+          <rect width="8" height="14" x="8" fill="#FFFFFF" />
+          <rect width="8" height="14" x="16" fill="#CE2B37" />
+        </svg>
+      )
+    case 'es':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="3.5" y="0" fill="#AA151B" />
+          <rect width="24" height="7" y="3.5" fill="#F1BF00" />
+          <rect width="24" height="3.5" y="10.5" fill="#AA151B" />
+        </svg>
+      )
+    case 'fr':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="8" height="14" x="0" fill="#0055A4" />
+          <rect width="8" height="14" x="8" fill="#FFFFFF" />
+          <rect width="8" height="14" x="16" fill="#EF4135" />
+        </svg>
+      )
+    case 'nl':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="4.67" y="0" fill="#AE1C28" />
+          <rect width="24" height="4.67" y="4.67" fill="#FFFFFF" />
+          <rect width="24" height="4.67" y="9.33" fill="#21468B" />
+        </svg>
+      )
+    case 'pl':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="7" y="0" fill="#FFFFFF" />
+          <rect width="24" height="7" y="7" fill="#DC143C" />
+        </svg>
+      )
+    case 'sv':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="14" fill="#006AA7" />
+          <rect width="3" height="14" x="7" fill="#FECC00" />
+          <rect width="24" height="3" y="5.5" fill="#FECC00" />
+        </svg>
+      )
+    case 'fi':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="14" fill="#FFFFFF" />
+          <rect width="3.5" height="14" x="6.5" fill="#003580" />
+          <rect width="24" height="3.5" y="5.25" fill="#003580" />
+        </svg>
+      )
+    case 'no':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="14" fill="#BA0C2F" />
+          <rect width="4" height="14" x="6.5" fill="#FFFFFF" />
+          <rect width="24" height="4" y="5" fill="#FFFFFF" />
+          <rect width="2" height="14" x="7.5" fill="#00205B" />
+          <rect width="24" height="2" y="6" fill="#00205B" />
+        </svg>
+      )
+    case 'hu':
+      return (
+        <svg aria-hidden="true" focusable="false" width="24" height="14" viewBox="0 0 24 14">
+          <rect width="24" height="4.67" y="0" fill="#CD2A3E" />
+          <rect width="24" height="4.67" y="4.67" fill="#FFFFFF" />
+          <rect width="24" height="4.67" y="9.33" fill="#436F4D" />
+        </svg>
+      )
+    case 'en':
+    default:
+      return <FlagEnIcon />
+  }
+}
 
 export const ChevronDownIcon = () => (
   <svg aria-hidden="true" focusable="false"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path d="M5.70574534,8.81133541 L1.10947205,4.25232919 C0.963509317,4.10636646 0.963509317,3.87034162 1.10947205,3.72437888 L1.72437888,3.10947205 C1.87034162,2.96350932 2.10636646,2.96350932 2.25232919,3.10947205 L5.9697205,6.78959628 L9.68711181,3.10947205 C9.83307454,2.96350932 10.0690994,2.96350932 10.2150621,3.10947205 L10.829969,3.72437888 C10.9759317,3.87034162 10.9759317,4.10636646 10.829969,4.25232919 L6.23369566,8.81133541 C6.08773292,8.95729814 5.85170808,8.95729814 5.70574534,8.81133541 Z" transform="translate(-1 -3)"/></svg>

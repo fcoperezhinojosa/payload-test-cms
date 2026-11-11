@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Payload } from 'payload'
 import type { Exhibition, Media, Page, Review } from '@/payload-types'
+import { localizeHref, type LocaleCode } from '@/lib/i18n'
+import type { Dictionary } from '@/lib/dictionaries'
 import { DestinationCardsSection } from './DestinationCardsSection'
 import { FaqSection } from './FaqSection'
 import { IconCardsSection } from './IconCardsSection'
@@ -13,9 +15,11 @@ import { PillsSection } from './PillsSection'
 type Props = {
   blocks: Page['layout']
   payload: Payload
+  locale: LocaleCode
+  dict: Dictionary
 }
 
-export async function RenderBlocks({ blocks, payload }: Props) {
+export async function RenderBlocks({ blocks, payload, locale, dict }: Props) {
   if (!blocks || blocks.length === 0) {
     return null
   }
@@ -33,6 +37,7 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   key={key}
                   heading={block.heading}
                   cards={block.cards}
+                  noImageLabel={dict.common.noImage}
                 />
               )
             }
@@ -56,6 +61,7 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   pills={block.pills}
                   moreLabel={block.moreLabel}
                   moreUrl={block.moreUrl}
+                  locale={locale}
                 />
               )
             }
@@ -69,6 +75,8 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   cards={block.cards}
                   moreLabel={block.moreLabel}
                   moreUrl={block.moreUrl}
+                  locale={locale}
+                  noImageLabel={dict.common.noImage}
                 />
               )
             }
@@ -83,6 +91,7 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   footerText={block.footerText}
                   footerLinkLabel={block.footerLinkLabel}
                   footerLinkUrl={block.footerLinkUrl}
+                  locale={locale}
                 />
               )
             }
@@ -100,6 +109,13 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                   termsUrl={block.termsUrl}
                   image={block.image}
                   imageUrl={block.imageUrl}
+                  locale={locale}
+                  labels={{
+                    noImage: dict.common.noImage,
+                    emailPlaceholder: dict.newsletter.emailPlaceholder,
+                    subscribeLabel: dict.newsletter.subscribeLabel,
+                    successPrefix: dict.newsletter.successPrefix,
+                  }}
                 />
               )
             }
@@ -142,6 +158,7 @@ export async function RenderBlocks({ blocks, payload }: Props) {
               if (block.showAllFeatured || !block.selectedReviews?.length) {
                 const res = await payload.find({
                   collection: 'reviews',
+                  locale,
                   where: {
                     featured: {
                       equals: true,
@@ -164,14 +181,15 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                     {block.subheading && <p>{block.subheading}</p>}
                   </div>
                   {reviewsList.length === 0 ? (
-                    <p className="empty-state">
-                      Aún no hay reviews publicadas. Añádelas desde <code>/admin/collections/reviews</code>.
-                    </p>
+                    <p className="empty-state">{dict.reviews.emptyState}</p>
                   ) : (
                     <div className="reviews-grid">
                       {reviewsList.map((review) => (
                         <article key={review.id} className="review-card">
-                          <div className="review-stars" aria-label={`${review.rating} de 5 estrellas`}>
+                          <div
+                            className="review-stars"
+                            aria-label={dict.reviews.starsLabel.replace('{rating}', String(review.rating))}
+                          >
                             {'★'.repeat(review.rating)}
                             {'☆'.repeat(Math.max(0, 5 - review.rating))}
                           </div>
@@ -215,7 +233,7 @@ export async function RenderBlocks({ blocks, payload }: Props) {
                       <h2>{block.heading}</h2>
                       {block.text && <p>{block.text}</p>}
                     </div>
-                    <Link href={block.buttonUrl} className="btn-primary">
+                    <Link href={localizeHref(block.buttonUrl, locale)} className="btn-primary">
                       {block.buttonLabel}
                     </Link>
                   </div>

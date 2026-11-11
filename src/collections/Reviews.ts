@@ -26,6 +26,7 @@ export const Reviews: CollectionConfig = {
         {
           name: 'role',
           type: 'text',
+          localized: true,
           admin: {
             width: '50%',
             placeholder: 'Ej. Visitante / Crítica de Arte / Cliente verificado',
@@ -63,6 +64,7 @@ export const Reviews: CollectionConfig = {
       name: 'comment',
       type: 'textarea',
       required: true,
+      localized: true,
     },
   ],
 }

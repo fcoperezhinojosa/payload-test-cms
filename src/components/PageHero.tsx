@@ -1,8 +1,10 @@
 import React from 'react'
 import type { Media, Page } from '@/payload-types'
+import type { Dictionary } from '@/lib/dictionaries'
 
 type Props = {
   page: Page
+  dict?: Dictionary
 }
 
 function renderOverlayUspIcon(icon?: string | null) {
@@ -67,7 +69,7 @@ function renderBottomUspIcon(icon?: string | null) {
   }
 }
 
-export function PageHero({ page }: Props) {
+export function PageHero({ page, dict }: Props) {
   const heroType = page.heroType || 'imageOverlayUsp'
 
   if (heroType === 'none') {
@@ -138,7 +140,7 @@ export function PageHero({ page }: Props) {
     <header className={`hero hero--${heroType}`}>
       <div className="hero-inner">
         <span className="hero-eyebrow">
-          {page.template === 'landing' ? 'Landing Page · CMS' : page.title}
+          {page.template === 'landing' ? dict?.inspector.landingEyebrow || 'Landing Page · CMS' : page.title}
         </span>
         <h1>{page.heroHeading || page.title}</h1>
         {page.heroSubheading && <p className="hero-subheading">{page.heroSubheading}</p>}

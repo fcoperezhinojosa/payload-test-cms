@@ -58,8 +58,8 @@ export const DEFAULT_FOOTER = {
   copyright: '© Suntransfers.com {year}',
   legalLinks: [
     { label: 'Terms and Conditions', url: '/terms-and-conditions' },
-    { label: 'Privacy Policy', url: '/terms-and-conditions#privacy_policy' },
-    { label: 'Cookies Policy', url: '/terms-and-conditions#cookies_policy' },
-    { label: 'Accessibility Statement', url: `${SUN}/accessibility-statement` },
+    { label: 'Privacy Policy', url: '/privacy-policy' },
+    { label: 'Cookies Policy', url: '/cookies-policy' },
+    { label: 'Accessibility Statement', url: '/accessibility-statement' },
   ] as ChromeLink[],
 }

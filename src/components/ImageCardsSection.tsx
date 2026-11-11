@@ -12,9 +12,10 @@ export type ImageCardItem = {
 export type ImageCardsSectionProps = {
   heading: string
   cards?: ImageCardItem[] | null
+  noImageLabel?: string
 }
 
-export function ImageCardsSection({ heading, cards }: ImageCardsSectionProps) {
+export function ImageCardsSection({ heading, cards, noImageLabel = 'No image' }: ImageCardsSectionProps) {
   if (!cards || cards.length === 0) {
     return null
   }
@@ -43,7 +44,7 @@ export function ImageCardsSection({ heading, cards }: ImageCardsSectionProps) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={resolvedSrc} alt={resolvedAlt} loading="lazy" />
                 ) : (
-                  <div className="image-card-placeholder">Sin imagen</div>
+                  <div className="image-card-placeholder">{noImageLabel}</div>
                 )}
               </div>
               <h3 className="image-card-title">{card.title}</h3>

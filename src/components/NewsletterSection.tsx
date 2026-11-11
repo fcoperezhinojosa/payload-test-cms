@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import type { Media } from '@/payload-types'
+import { localizeHref, type LocaleCode } from '@/lib/i18n'
 
 export type NewsletterSectionProps = {
   title: string
@@ -14,6 +15,13 @@ export type NewsletterSectionProps = {
   termsUrl?: string | null
   image?: (number | null) | Media
   imageUrl?: string | null
+  locale: LocaleCode
+  labels: {
+    noImage: string
+    emailPlaceholder: string
+    subscribeLabel: string
+    successPrefix: string
+  }
 }
 
 export function NewsletterSection({
@@ -26,6 +34,8 @@ export function NewsletterSection({
   termsUrl,
   image,
   imageUrl,
+  locale,
+  labels,
 }: NewsletterSectionProps) {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -50,7 +60,7 @@ export function NewsletterSection({
 
           {submitted ? (
             <div className="newsletter-success">
-              ✓ Thanks for subscribing with <strong>{email}</strong>!
+              ✓ {labels.successPrefix} <strong>{email}</strong>!
             </div>
           ) : (
             <form className="newsletter-form" onSubmit={handleSubmit}>
@@ -59,12 +69,12 @@ export function NewsletterSection({
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={inputPlaceholder || 'Your email address'}
-                aria-label={inputPlaceholder || 'Your email address'}
+                placeholder={inputPlaceholder || labels.emailPlaceholder}
+                aria-label={inputPlaceholder || labels.emailPlaceholder}
                 className="newsletter-input"
               />
               <button type="submit" className="newsletter-submit-btn">
-                {buttonLabel || 'Subscribe'}
+                {buttonLabel || labels.subscribeLabel}
               </button>
             </form>
           )}
@@ -73,7 +83,10 @@ export function NewsletterSection({
             <p className="newsletter-disclaimer">
               {disclaimerText && <span>{disclaimerText} </span>}
               {termsLabel && (
-                <Link href={termsUrl || '/terms-and-conditions'} className="newsletter-terms-link">
+                <Link
+                  href={localizeHref(termsUrl || '/terms-and-conditions', locale)}
+                  className="newsletter-terms-link"
+                >
                   {termsLabel}
                 </Link>
               )}
@@ -86,7 +99,7 @@ export function NewsletterSection({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={resolvedSrc} alt={resolvedAlt} loading="lazy" />
           ) : (
-            <div className="newsletter-media-placeholder">Sin imagen</div>
+            <div className="newsletter-media-placeholder">{labels.noImage}</div>
           )}
         </div>
       </div>

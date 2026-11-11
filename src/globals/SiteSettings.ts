@@ -21,6 +21,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'tagline',
       type: 'text',
+      localized: true,
     },
     {
       name: 'logo',
@@ -102,6 +103,7 @@ export const SiteSettings: GlobalConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
         },
         {
           name: 'url',
@@ -123,6 +125,7 @@ export const SiteSettings: GlobalConfig = {
         {
           name: 'footerColumn',
           type: 'text',
+          localized: true,
           label: 'Columna del footer',
           admin: {
             description: 'Título de la columna donde aparece (ej. Support, Partners, Suntransfers).',
@@ -180,9 +183,14 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'languageLabel',
               type: 'text',
-              label: 'Texto de idioma',
-              defaultValue: DEFAULT_HEADER.languageLabel,
-              admin: { width: '50%', condition: (_, siblingData) => siblingData?.showLanguageCurrency !== false },
+              localized: true,
+              label: 'Texto de idioma (opcional)',
+              admin: {
+                width: '50%',
+                placeholder: 'Automático según idioma de la URL',
+                description: 'Déjalo vacío para mostrar automáticamente el idioma activo (English, Deutsch, Español…).',
+                condition: (_, siblingData) => siblingData?.showLanguageCurrency !== false,
+              },
             },
             {
               name: 'currencyLabel',
@@ -205,6 +213,7 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'ctaLabel',
               type: 'text',
+              localized: true,
               label: 'Texto del botón',
               defaultValue: DEFAULT_HEADER.ctaLabel,
               admin: { width: '50%', condition: (_, siblingData) => siblingData?.showCta !== false },
@@ -232,6 +241,7 @@ export const SiteSettings: GlobalConfig = {
         {
           name: 'supportText',
           type: 'text',
+          localized: true,
           label: 'Texto de soporte',
           defaultValue: DEFAULT_FOOTER.supportText,
         },
@@ -244,6 +254,7 @@ export const SiteSettings: GlobalConfig = {
         {
           name: 'copyright',
           type: 'text',
+          localized: true,
           label: 'Copyright',
           defaultValue: DEFAULT_FOOTER.copyright,
           admin: { description: 'Usa {year} para insertar el año actual automáticamente.' },

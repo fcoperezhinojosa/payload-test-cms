@@ -30,6 +30,7 @@ export const Artists: CollectionConfig = {
     {
       name: 'nationality',
       type: 'text',
+      localized: true,
       admin: {
         position: 'sidebar',
       },
@@ -49,6 +50,7 @@ export const Artists: CollectionConfig = {
     {
       name: 'biography',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'website',
@@ -63,6 +65,7 @@ export const Artists: CollectionConfig = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
         },
         {
           name: 'year',
@@ -71,6 +74,7 @@ export const Artists: CollectionConfig = {
         {
           name: 'medium',
           type: 'text',
+          localized: true,
         },
         {
           name: 'image',

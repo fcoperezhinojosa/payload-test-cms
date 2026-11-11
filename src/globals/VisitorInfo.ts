@@ -13,6 +13,7 @@ export const VisitorInfo: GlobalConfig = {
     {
       name: 'admissionNotice',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Aviso destacado para visitantes (ej. entrada gratuita el primer domingo de mes)',
       },
@@ -20,6 +21,7 @@ export const VisitorInfo: GlobalConfig = {
     {
       name: 'address',
       type: 'textarea',
+      localized: true,
     },
     {
       name: 'googleMapsUrl',
@@ -33,6 +35,7 @@ export const VisitorInfo: GlobalConfig = {
           name: 'days',
           type: 'text',
           required: true,
+          localized: true,
           admin: {
             placeholder: 'Ej. Martes a Viernes',
           },
@@ -40,6 +43,7 @@ export const VisitorInfo: GlobalConfig = {
         {
           name: 'hours',
           type: 'text',
+          localized: true,
           admin: {
             placeholder: 'Ej. 10:00 – 20:00',
           },
@@ -60,6 +64,7 @@ export const VisitorInfo: GlobalConfig = {
           name: 'name',
           type: 'text',
           required: true,
+          localized: true,
           admin: {
             placeholder: 'Ej. Entrada General / Reducida',
           },
@@ -73,12 +78,14 @@ export const VisitorInfo: GlobalConfig = {
         {
           name: 'description',
           type: 'text',
+          localized: true,
         },
       ],
     },
     {
       name: 'accessibilityInfo',
       type: 'richText',
+      localized: true,
     },
   ],
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { notFound } from 'next/navigation'
 import {
   Inter,
   Montserrat,
@@ -9,9 +10,11 @@ import {
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { ensureSeedData } from '@/lib/ensureSeedData'
+import { isValidLocale } from '@/lib/i18n'
+import { getDictionary } from '@/lib/dictionaries'
 import { SiteHeader } from '@/components/site/SiteHeader'
 import { SiteFooter } from '@/components/site/SiteFooter'
-import './styles.css'
+import '../styles.css'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -45,18 +48,30 @@ const playfair = Playfair_Display({
 })
 
 export const metadata = {
-  description: 'Sitio web híbrido con Payload 3.0 y Next.js (CMS de páginas + Headless).',
-  title: 'Payload CMS · Páginas y Templates',
+  description: 'Hybrid website with Payload 3.0 and Next.js (CMS Pages + Headless).',
+  title: 'Payload CMS · Pages & Templates',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
+type Props = {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}
+
+export default async function LocaleRootLayout({ children, params }: Props) {
+  const { locale } = await params
+  if (!isValidLocale(locale)) {
+    notFound()
+  }
+
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
 
   await ensureSeedData(payload)
 
-  const siteSettings = await payload.findGlobal({ slug: 'site-settings' }).catch(() => null)
+  const siteSettings = await payload
+    .findGlobal({ slug: 'site-settings', locale })
+    .catch(() => null)
+  const dict = getDictionary(locale)
 
   const globalFont = siteSettings?.fontFamily || 'poppins'
   const globalTheme = siteSettings?.backgroundTheme || 'light'
@@ -75,13 +90,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     : undefined
 
   return (
-    <html lang="es" className={fontClasses}>
+    <html lang={locale} className={fontClasses}>
       <body data-theme={globalTheme} data-font={globalFont} style={bodyStyle}>
-        <SiteHeader settings={siteSettings} />
+        <SiteHeader settings={siteSettings} locale={locale} dict={dict} />
 
         <main className="site-main">{children}</main>
 
-        <SiteFooter settings={siteSettings} />
+        <SiteFooter settings={siteSettings} locale={locale} />
       </body>
     </html>
   )

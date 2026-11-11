@@ -11,12 +11,14 @@ export const PillsSectionBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
       defaultValue: '700+ destinations worldwide',
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       label: 'Description',
       defaultValue: 'Select a country to see available options for your trip.',
     },
@@ -46,6 +48,7 @@ export const PillsSectionBlock: Block = {
               name: 'label',
               type: 'text',
               required: true,
+              localized: true,
               label: 'Texto de la Pill',
               admin: {
                 width: '40%',
@@ -71,6 +74,7 @@ export const PillsSectionBlock: Block = {
         {
           name: 'moreLabel',
           type: 'text',
+          localized: true,
           label: 'Link More Label (ej. See more countries)',
           defaultValue: 'See more countries',
           admin: {

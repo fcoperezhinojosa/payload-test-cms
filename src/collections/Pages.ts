@@ -12,15 +12,17 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     group: 'Content',
     defaultColumns: ['title', 'slug', 'template', 'status', 'updatedAt'],
-    preview: (doc) => {
+    preview: (doc, { locale }) => {
       const slug = typeof doc?.slug === 'string' ? doc.slug : ''
       if (!slug) return null
-      return slug === 'home' ? '/' : `/${slug}`
+      const loc = typeof locale === 'string' ? locale : 'en'
+      return slug === 'home' ? `/${loc}` : `/${loc}/${slug}`
     },
     livePreview: {
-      url: ({ data }) => {
+      url: ({ data, locale }) => {
         const slug = typeof data?.slug === 'string' ? data.slug : ''
-        return slug === 'home' ? '/' : `/${slug}`
+        const loc = typeof locale === 'string' ? locale : locale?.code || 'en'
+        return slug === 'home' ? `/${loc}` : `/${loc}/${slug}`
       },
     },
   },
@@ -32,6 +34,7 @@ export const Pages: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -144,12 +147,14 @@ export const Pages: CollectionConfig = {
             {
               name: 'heroHeading',
               type: 'text',
+              localized: true,
               label: 'Título del Hero (Encima de la imagen)',
               defaultValue: 'Reliable airport transfers private taxi or shared shuttle',
             },
             {
               name: 'heroSubheading',
               type: 'textarea',
+              localized: true,
               label: 'Descripción del Hero (Encima de la imagen)',
               defaultValue: 'Private transfers & shared shuttles to 700+ airports.',
             },
@@ -201,6 +206,7 @@ export const Pages: CollectionConfig = {
                       name: 'text',
                       type: 'text',
                       required: true,
+                      localized: true,
                       label: 'Texto del USP',
                       admin: {
                         width: '60%',
@@ -243,6 +249,7 @@ export const Pages: CollectionConfig = {
                       name: 'highlight',
                       type: 'text',
                       required: true,
+                      localized: true,
                       label: 'Cifra / Destacado en azul',
                       admin: {
                         width: '30%',
@@ -253,6 +260,7 @@ export const Pages: CollectionConfig = {
                       name: 'text',
                       type: 'text',
                       required: true,
+                      localized: true,
                       label: 'Texto descriptivo',
                       admin: {
                         width: '40%',
@@ -289,6 +297,7 @@ export const Pages: CollectionConfig = {
                       name: 'richText',
                       type: 'richText',
                       required: true,
+                      localized: true,
                     },
                   ],
                 },
@@ -302,10 +311,12 @@ export const Pages: CollectionConfig = {
                     {
                       name: 'heading',
                       type: 'text',
+                      localized: true,
                     },
                     {
                       name: 'subheading',
                       type: 'textarea',
+                      localized: true,
                     },
                     {
                       name: 'items',
@@ -317,15 +328,18 @@ export const Pages: CollectionConfig = {
                           name: 'title',
                           type: 'text',
                           required: true,
+                          localized: true,
                         },
                         {
                           name: 'description',
                           type: 'textarea',
                           required: true,
+                          localized: true,
                         },
                         {
                           name: 'badge',
                           type: 'text',
+                          localized: true,
                           admin: {
                             placeholder: 'Ej. 01, Misión, +10 años...',
                           },
@@ -344,11 +358,13 @@ export const Pages: CollectionConfig = {
                     {
                       name: 'heading',
                       type: 'text',
-                      defaultValue: 'Lo que dicen nuestros visitantes',
+                      localized: true,
+                      defaultValue: 'What our visitors say',
                     },
                     {
                       name: 'subheading',
                       type: 'textarea',
+                      localized: true,
                     },
                     {
                       name: 'showAllFeatured',
@@ -384,6 +400,7 @@ export const Pages: CollectionConfig = {
                     {
                       name: 'caption',
                       type: 'text',
+                      localized: true,
                     },
                   ],
                 },
@@ -398,10 +415,12 @@ export const Pages: CollectionConfig = {
                       name: 'heading',
                       type: 'text',
                       required: true,
+                      localized: true,
                     },
                     {
                       name: 'text',
                       type: 'textarea',
+                      localized: true,
                     },
                     {
                       type: 'row',
@@ -410,6 +429,7 @@ export const Pages: CollectionConfig = {
                           name: 'buttonLabel',
                           type: 'text',
                           required: true,
+                          localized: true,
                         },
                         {
                           name: 'buttonUrl',
@@ -430,6 +450,7 @@ export const Pages: CollectionConfig = {
                     {
                       name: 'heading',
                       type: 'text',
+                      localized: true,
                     },
                     {
                       name: 'exhibitions',
@@ -449,10 +470,12 @@ export const Pages: CollectionConfig = {
             {
               name: 'metaTitle',
               type: 'text',
+              localized: true,
             },
             {
               name: 'metaDescription',
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'ogImage',

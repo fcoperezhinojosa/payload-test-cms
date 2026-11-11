@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { localizeHref, type LocaleCode } from '@/lib/i18n'
 
 export type FaqItem = {
   id?: string | null
@@ -16,6 +17,7 @@ export type FaqSectionProps = {
   footerText?: string | null
   footerLinkLabel?: string | null
   footerLinkUrl?: string | null
+  locale: LocaleCode
 }
 
 export function FaqSection({
@@ -25,6 +27,7 @@ export function FaqSection({
   footerText,
   footerLinkLabel,
   footerLinkUrl,
+  locale,
 }: FaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
@@ -90,7 +93,7 @@ export function FaqSection({
             <p className="faq-footer">
               {footerText && <span>{footerText} </span>}
               {footerLinkLabel && (
-                <Link href={footerLinkUrl || '#'} className="faq-footer-link">
+                <Link href={localizeHref(footerLinkUrl || '#', locale)} className="faq-footer-link">
                   {footerLinkLabel}
                 </Link>
               )}

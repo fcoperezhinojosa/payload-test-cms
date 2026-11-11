@@ -98,7 +98,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale:
+    | ('false' | 'none' | 'null')
+    | false
+    | null
+    | ('en' | 'de' | 'it' | 'es' | 'fr' | 'nl' | 'pl' | 'sv' | 'fi' | 'no' | 'hu')
+    | ('en' | 'de' | 'it' | 'es' | 'fr' | 'nl' | 'pl' | 'sv' | 'fi' | 'no' | 'hu')[];
   globals: {
     'site-settings': SiteSetting;
     'visitor-info': VisitorInfo;
@@ -107,7 +112,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'visitor-info': VisitorInfoSelect<false> | VisitorInfoSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'de' | 'it' | 'es' | 'fr' | 'nl' | 'pl' | 'sv' | 'fi' | 'no' | 'hu';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -1110,6 +1115,9 @@ export interface SiteSetting {
    */
   header?: {
     showLanguageCurrency?: boolean | null;
+    /**
+     * Déjalo vacío para mostrar automáticamente el idioma activo (English, Deutsch, Español…).
+     */
     languageLabel?: string | null;
     currencyLabel?: string | null;
     showCta?: boolean | null;

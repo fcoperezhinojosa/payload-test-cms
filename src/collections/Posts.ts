@@ -15,6 +15,7 @@ export const Posts: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -62,11 +63,13 @@ export const Posts: CollectionConfig = {
     {
       name: 'excerpt',
       type: 'textarea',
+      localized: true,
     },
     {
       name: 'content',
       type: 'richText',
       required: true,
+      localized: true,
     },
     {
       name: 'tags',
@@ -76,6 +79,7 @@ export const Posts: CollectionConfig = {
           name: 'tag',
           type: 'text',
           required: true,
+          localized: true,
         },
       ],
     },

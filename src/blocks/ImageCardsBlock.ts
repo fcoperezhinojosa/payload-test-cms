@@ -11,6 +11,7 @@ export const ImageCardsBlock: Block = {
       name: 'heading',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Título de la sección',
       defaultValue: 'All set before you land',
     },
@@ -43,6 +44,7 @@ export const ImageCardsBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Título de la tarjeta',
           admin: {
             placeholder: 'Ej. Peace of mind',
@@ -52,6 +54,7 @@ export const ImageCardsBlock: Block = {
           name: 'description',
           type: 'textarea',
           required: true,
+          localized: true,
           label: 'Texto descriptivo',
           admin: {
             placeholder:

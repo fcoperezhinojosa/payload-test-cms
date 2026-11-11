@@ -11,12 +11,14 @@ export const DestinationCardsBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
       defaultValue: 'Airports we go to every day',
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       label: 'Description',
       defaultValue: 'We get you to and from the airport, wherever you go.',
     },
@@ -51,6 +53,7 @@ export const DestinationCardsBlock: Block = {
               name: 'title',
               type: 'text',
               required: true,
+              localized: true,
               label: 'Card Title',
               admin: {
                 width: '50%',
@@ -61,6 +64,7 @@ export const DestinationCardsBlock: Block = {
               name: 'description',
               type: 'text',
               required: true,
+              localized: true,
               label: 'Card Description',
               admin: {
                 width: '50%',
@@ -85,6 +89,7 @@ export const DestinationCardsBlock: Block = {
         {
           name: 'moreLabel',
           type: 'text',
+          localized: true,
           label: 'Botón inferior Label (opcional)',
           defaultValue: 'See all 399 routes',
           admin: {

@@ -11,12 +11,14 @@ export const FaqBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
       defaultValue: 'FAQs',
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       label: 'Description / Subtítulo lateral',
       defaultValue: 'What travellers ask before booking a transfer.',
     },
@@ -34,6 +36,7 @@ export const FaqBlock: Block = {
           name: 'question',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Question',
           admin: {
             placeholder: 'Is it worth booking an airport transfer in advance?',
@@ -43,6 +46,7 @@ export const FaqBlock: Block = {
           name: 'answer',
           type: 'textarea',
           required: true,
+          localized: true,
           label: 'Answer',
           admin: {
             placeholder:
@@ -57,6 +61,7 @@ export const FaqBlock: Block = {
         {
           name: 'footerText',
           type: 'text',
+          localized: true,
           label: 'Texto pie (opcional)',
           defaultValue: 'Do you have more questions?',
           admin: {
@@ -66,6 +71,7 @@ export const FaqBlock: Block = {
         {
           name: 'footerLinkLabel',
           type: 'text',
+          localized: true,
           label: 'Texto del enlace (opcional)',
           defaultValue: 'Visit our Help Centre',
           admin: {

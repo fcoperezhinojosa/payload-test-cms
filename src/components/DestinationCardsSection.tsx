@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import type { Media } from '@/payload-types'
+import { localizeHref, type LocaleCode } from '@/lib/i18n'
 
 export type DestinationCardItem = {
   id?: string | null
@@ -17,6 +18,8 @@ export type DestinationCardsSectionProps = {
   cards?: DestinationCardItem[] | null
   moreLabel?: string | null
   moreUrl?: string | null
+  locale: LocaleCode
+  noImageLabel?: string
 }
 
 export function DestinationCardsSection({
@@ -25,6 +28,8 @@ export function DestinationCardsSection({
   cards,
   moreLabel,
   moreUrl,
+  locale,
+  noImageLabel = 'No image',
 }: DestinationCardsSectionProps) {
   if (!cards || cards.length === 0) {
     return null
@@ -53,7 +58,7 @@ export function DestinationCardsSection({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={resolvedSrc} alt={resolvedAlt} loading="lazy" />
                 ) : (
-                  <div className="destination-card-placeholder">Sin imagen</div>
+                  <div className="destination-card-placeholder">{noImageLabel}</div>
                 )}
               </div>
               <div className="destination-card-body">
@@ -67,7 +72,7 @@ export function DestinationCardsSection({
             return (
               <Link
                 key={card.id || index}
-                href={card.href}
+                href={localizeHref(card.href, locale)}
                 className="destination-card destination-card--link"
               >
                 {cardInner}
@@ -85,7 +90,7 @@ export function DestinationCardsSection({
 
       {moreLabel && (
         <div className="destination-cards-footer">
-          <Link href={moreUrl || '#'} className="destination-more-btn">
+          <Link href={localizeHref(moreUrl || '#', locale)} className="destination-more-btn">
             <span>{moreLabel}</span>
             <svg
               width="14"
